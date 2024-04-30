@@ -1,0 +1,54 @@
+ion-card {
+    max-width: 400px;
+    margin: 0 auto;
+    border-radius: 15px;
+    --background: #ffffff;
+}
+
+ion-content {
+    --ion-background-color: #ffffff;
+}
+
+ion-input {
+    margin-bottom: 20px;
+    border-radius: 10px;
+    border: 1px solid #818181;
+    text-indent: 5px;
+}
+
+ion-button {
+    margin-top: 20px;
+    --border-radius: 8px;
+}
+
+ion-alert {
+    --background: #ffffff;
+    --border-radius: 8px;
+}
+
+.back-button {
+    cursor: pointer;
+}
+
+.mb-4 {
+    margin-bottom: 1.5rem;
+    font-weight: bold;
+    font-size: 40px;
+    margin: 10px;
+    color: #1a73b3;
+}
+
+.mb-5 {
+    color: gray;
+    font-size: 10px;
+    margin-bottom: 10px;
+}
+
+.mt-2 {
+    margin-top: 1rem;
+    color: gray;
+}
+
+#logincontent {
+    --padding-top: 52px;
+}
