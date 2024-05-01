@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import firebase from '../firebaseConfig';
+import { firebase } from '../firebaseConfig';
 
 export const useAuth = () => {
     const [loggedIn, setLoggedIn] = useState(false);

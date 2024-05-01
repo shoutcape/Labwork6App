@@ -1,5 +1,5 @@
 // tänne tulee login logiikka
-import firebase from '../firebaseConfig';
+import { firebase } from '../firebaseConfig';
 
 export async function loginUser(email: string, password: string) {
     try {

@@ -93,7 +93,7 @@ const SignupPage: React.FC = () => {
                                 }
                                 required
                             />
-                            <label>Password Confirmation</label>
+                            <label>Confirm Password</label>
                             <IonInput
                                 type="password"
                                 value={passwordConfirm}

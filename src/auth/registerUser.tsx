@@ -1,5 +1,5 @@
 // tänne tulee register logiikka
-import firebase from '../firebaseConfig';
+import { firebase } from '../firebaseConfig';
 
 export async function registerUser(email: string, password: string) {
     try {
