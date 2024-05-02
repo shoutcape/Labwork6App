@@ -1,3 +1,4 @@
+
 ion-card {
     max-width: 400px;
     margin: 0 auto;
@@ -8,6 +9,7 @@ ion-card {
 ion-content {
     --ion-background-color: #ffffff;
 }
+
 
 ion-input {
     margin-bottom: 20px;
@@ -24,6 +26,11 @@ ion-button {
 ion-alert {
     --background: #ffffff;
     --border-radius: 8px;
+}
+
+
+#input {
+    color: black;
 }
 
 .back-button {
@@ -52,3 +59,4 @@ ion-alert {
 #logincontent {
     --padding-top: 52px;
 }
+

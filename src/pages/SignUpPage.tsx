@@ -79,6 +79,7 @@ const SignupPage: React.FC = () => {
                         >
                             <label>Email</label>
                             <IonInput
+                                id='input'
                                 type="email"
                                 value={email}
                                 onIonChange={(e) => setEmail(e.detail.value!)}
@@ -86,6 +87,7 @@ const SignupPage: React.FC = () => {
                             />
                             <label>Password</label>
                             <IonInput
+                                id='input'
                                 type="password"
                                 value={password}
                                 onIonChange={(e) =>
@@ -95,6 +97,7 @@ const SignupPage: React.FC = () => {
                             />
                             <label>Confirm Password</label>
                             <IonInput
+                                id='input'
                                 type="password"
                                 value={passwordConfirm}
                                 onIonChange={(e) =>

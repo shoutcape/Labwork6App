@@ -60,6 +60,7 @@ const LoginPage: React.FC = () => {
                         >
                             <label>Email</label>
                             <IonInput
+                                id='input'
                                 type="email"
                                 onIonChange={(e: any) =>
                                     setUsername(e.target.value!)
@@ -67,6 +68,7 @@ const LoginPage: React.FC = () => {
                             />
                             <label>Password</label>
                             <IonInput
+                                id='input'
                                 type="password"
                                 onIonChange={(e: any) =>
                                     setPassword(e.target.value!)
