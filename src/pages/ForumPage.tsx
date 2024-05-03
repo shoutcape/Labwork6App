@@ -28,22 +28,19 @@ const ForumPage: React.FC = () => {
     const location = useLocation()
     const isMounted = useRef(true)
 
-
-
-
     useEffect(() => {
         if (location.pathname === '/forumpage') {
-
-
-        const unlisten = history.listen(() => {
-            // Close the modals on page change
-            setShowUsernameModal(false); 
-            setShowCreatePostModal(false)
-        });
-        // Cleanup function to prevent memory leaks
-        return () => {unlisten(), isMounted.current = false};
-     }
-    }, [location]); 
+            const unlisten = history.listen(() => {
+                // Close the modals on page change
+                setShowUsernameModal(false)
+                setShowCreatePostModal(false)
+            })
+            // Cleanup function to prevent memory leaks
+            return () => {
+                unlisten(), (isMounted.current = false)
+            }
+        }
+    }, [location])
 
     // while loading returns blank page
     if (loading) {
@@ -51,24 +48,20 @@ const ForumPage: React.FC = () => {
     }
     // if not logged in return to login screen
     if (!loggedIn) {
-    return <Redirect to="/login" />
+        return <Redirect to="/login" />
     }
-
-
 
     const submitPost = () => {
         // check if user has a username
         firebase.auth().onAuthStateChanged(function (user) {
             if (user?.displayName == null) {
-                console.log('ei käyttäjää');
+                console.log('ei käyttäjää')
                 setShowUsernameModal(true)
             } else {
                 setShowCreatePostModal(true)
             }
         })
-
     }
-
 
     return (
         <IonPage>
@@ -114,8 +107,14 @@ const ForumPage: React.FC = () => {
                     </div>
                 </IonCard>
                 {/* component for post creation */}
-               <CreatePostModal showCreatePostModal={showCreatePostModal} setShowCreatePostModal={setShowCreatePostModal} /> 
-                <UsernameModal showUsernameModal={showUsernameModal} setShowUsernameModal={setShowUsernameModal}/>
+                <CreatePostModal
+                    showCreatePostModal={showCreatePostModal}
+                    setShowCreatePostModal={setShowCreatePostModal}
+                />
+                <UsernameModal
+                    showUsernameModal={showUsernameModal}
+                    setShowUsernameModal={setShowUsernameModal}
+                />
             </IonContent>
         </IonPage>
     )

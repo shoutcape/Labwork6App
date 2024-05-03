@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 import {
     IonPage,
     IonContent,
@@ -10,54 +10,59 @@ import {
     IonToast,
     IonLoading,
     IonIcon,
-} from '@ionic/react';
-import { Link, useHistory } from 'react-router-dom';
-import { registerUser } from '../auth/registerUser';
-import './SignupAndLogin.css';
-import {arrowBack} from 'ionicons/icons'
+} from '@ionic/react'
+import { Link, useHistory } from 'react-router-dom'
+import { registerUser } from '../auth/registerUser'
+import './SignupAndLogin.css'
+import { arrowBack } from 'ionicons/icons'
 
 const SignupPage: React.FC = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [passwordConfirm, setPasswordConfirm] = useState('');
-    const [errorMessage, setErrorMessage] = useState('');
-    const [loading, setLoading] = useState<boolean>(false);
-    const [showToast, setShowToast] = useState<boolean>(false);
-    const [toastMessage, setToastMessage] = useState('');
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [passwordConfirm, setPasswordConfirm] = useState('')
+    const [errorMessage, setErrorMessage] = useState('')
+    const [loading, setLoading] = useState<boolean>(false)
+    const [showToast, setShowToast] = useState<boolean>(false)
+    const [toastMessage, setToastMessage] = useState('')
     const history = useHistory()
 
     const handleSignup = async () => {
         try {
-            setLoading(true);
+            setLoading(true)
             if (password !== passwordConfirm) {
-                setErrorMessage('Passwords do not match');
-                return;
+                setErrorMessage('Passwords do not match')
+                return
             }
-            await registerUser(email, password);
+            await registerUser(email, password)
 
-            setErrorMessage('');
-            setPasswordConfirm('');
-            setPassword('');
-            setEmail('');
+            setErrorMessage('')
+            setPasswordConfirm('')
+            setPassword('')
+            setEmail('')
 
             history.push('/login')
 
-            setToastMessage('User Created, now login');
+            setToastMessage('User Created, now login')
         } catch (error: any) {
-            setErrorMessage(`Failed to create an account: ${error.message}`);
+            setErrorMessage(`Failed to create an account: ${error.message}`)
         }
-        setLoading(false);
-        setShowToast(true);
-    };
+        setLoading(false)
+        setShowToast(true)
+    }
 
     return (
         <IonPage>
             <IonContent className="ion-padding">
-            <div className='back-button' onClick={() => history.push('/login')}>
-                <IonIcon icon={arrowBack} size='large' color='medium'  />
-            </div>
+                <div
+                    className="back-button"
+                    onClick={() => history.push('/login')}
+                >
+                    <IonIcon icon={arrowBack} size="large" color="medium" />
+                </div>
                 <div className="ion-text-center mb-4">Welcome!</div>
-                <div className="ion-text-center mb-5">Sign up to get started.</div>
+                <div className="ion-text-center mb-5">
+                    Sign up to get started.
+                </div>
                 <IonLoading
                     message={'Creating user please wait...'}
                     duration={0}
@@ -73,13 +78,13 @@ const SignupPage: React.FC = () => {
                         />
                         <form
                             onSubmit={(e) => {
-                                e.preventDefault();
-                                handleSignup();
+                                e.preventDefault()
+                                handleSignup()
                             }}
                         >
                             <label>Email</label>
                             <IonInput
-                                id='input'
+                                id="input"
                                 type="email"
                                 value={email}
                                 onIonChange={(e) => setEmail(e.detail.value!)}
@@ -87,7 +92,7 @@ const SignupPage: React.FC = () => {
                             />
                             <label>Password</label>
                             <IonInput
-                                id='input'
+                                id="input"
                                 type="password"
                                 value={password}
                                 onIonChange={(e) =>
@@ -97,7 +102,7 @@ const SignupPage: React.FC = () => {
                             />
                             <label>Confirm Password</label>
                             <IonInput
-                                id='input'
+                                id="input"
                                 type="password"
                                 value={passwordConfirm}
                                 onIonChange={(e) =>
@@ -126,7 +131,7 @@ const SignupPage: React.FC = () => {
                 ></IonToast>
             </IonContent>
         </IonPage>
-    );
-};
+    )
+}
 
-export default SignupPage;
+export default SignupPage

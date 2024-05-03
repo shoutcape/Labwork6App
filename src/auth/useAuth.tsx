@@ -1,22 +1,22 @@
-import { useEffect, useState } from 'react';
-import { firebase } from '../firebaseConfig';
+import { useEffect, useState } from 'react'
+import { firebase } from '../firebaseConfig'
 
 export const useAuth = () => {
-    const [loggedIn, setLoggedIn] = useState(false);
-    const [loading, setLoading] = useState(true);
+    const [loggedIn, setLoggedIn] = useState(false)
+    const [loading, setLoading] = useState(true)
 
     useEffect(() => {
         const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
             if (user) {
-                setLoggedIn(true);
+                setLoggedIn(true)
             } else {
-                setLoggedIn(false);
+                setLoggedIn(false)
             }
-            setLoading(false);
-        });
+            setLoading(false)
+        })
 
-        return () => unsubscribe();
-    }, []);
+        return () => unsubscribe()
+    }, [])
 
-    return { loggedIn, loading };
-};
+    return { loggedIn, loading }
+}

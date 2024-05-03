@@ -60,7 +60,7 @@ const UsernameModal: React.FC<UsernameModalProps> = ({
                 <IonGrid>
                     <form>
                         <IonInput
-                            style={{color: 'black'}}
+                            style={{ color: 'black' }}
                             value={username}
                             // on each change update the username
                             onIonChange={(e) => setUsername(e.detail.value!)}
