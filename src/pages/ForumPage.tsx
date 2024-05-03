@@ -4,7 +4,6 @@ import {
     IonContent,
     IonToolbar,
     IonButton,
-    IonModal,
     IonButtons,
     IonHeader,
     IonCard,
@@ -12,57 +11,64 @@ import {
     IonIcon,
 } from '@ionic/react'
 import './ForumPage.css'
-import { Redirect } from 'react-router'
+import { Redirect, useHistory, useLocation } from 'react-router'
 import { useAuth } from '../auth/useAuth'
-import { db } from '../firebaseConfig'
-import { useState } from 'react'
+import { firebase, db } from '../firebaseConfig'
+import { useEffect, useRef, useState } from 'react'
 import { chatboxEllipsesOutline, thumbsUpOutline } from 'ionicons/icons'
+import CreatePostModal from '../components/CreatePostModal'
+import UsernameModal from '../components/UsernameModal'
 
 const ForumPage: React.FC = () => {
     // useAuth checks if user is logged in
     const { loggedIn, loading } = useAuth()
-    const [showModal, setShowModal] = useState(false)
-    const modal = document.querySelector('ion-modal')
+    const [showCreatePostModal, setShowCreatePostModal] = useState(false)
+    const [showUsernameModal, setShowUsernameModal] = useState(false)
+    const history = useHistory()
+    const location = useLocation()
+    const isMounted = useRef(true)
+
+
+
+
+    useEffect(() => {
+        if (location.pathname === '/forumpage') {
+
+
+        const unlisten = history.listen(() => {
+            // Close the modals on page change
+            setShowUsernameModal(false); 
+            setShowCreatePostModal(false)
+        });
+        // Cleanup function to prevent memory leaks
+        return () => {unlisten(), isMounted.current = false};
+     }
+    }, [location]); 
+
     // while loading returns blank page
     if (loading) {
         return <IonPage></IonPage>
     }
     // if not logged in return to login screen
-    // if (!loggedIn) {
-    // return <Redirect to="/login" />
-    // }
+    if (!loggedIn) {
+    return <Redirect to="/login" />
+    }
+
+
 
     const submitPost = () => {
-        const createNewPost = async () => {
-            const username = 'dummyUser'
-            const content = 'dummyContent'
-            // get the timestamp when creating a new post
-            const currentDate = new Date()
-            const formattedDate = `${currentDate.toLocaleDateString()} ${currentDate.toLocaleTimeString()}`
-
-            const newPostData = {
-                username: username,
-                content: content,
-                likes: 0,
-                comments: 0,
-                createdAt: formattedDate,
+        // check if user has a username
+        firebase.auth().onAuthStateChanged(function (user) {
+            if (user?.displayName == null) {
+                console.log('ei käyttäjää');
+                setShowUsernameModal(true)
+            } else {
+                setShowCreatePostModal(true)
             }
-            // take the length of the posts document as count
-            const postsCollection = db.collection('posts')
-            const snapshot = await postsCollection.get()
-            const count = snapshot.docs.length
-            // console.log(postsCollection)
-            // console.log(snapshot)
-            // console.log(count)
+        })
 
-            // select database collection, create new document, set new document contents
-            db.collection('posts')
-                .doc(`postId${count + 1}`)
-                .set(newPostData)
-            console.log('new post added to db')
-        }
-        createNewPost()
     }
+
 
     return (
         <IonPage>
@@ -71,9 +77,7 @@ const ForumPage: React.FC = () => {
                 <div className="ion-text-center">
                     <IonButton
                         className="postButton"
-                        onClick={() => {
-                            setShowModal(true)
-                        }}
+                        onClick={submitPost}
                         expand="block"
                     >
                         Post
@@ -109,24 +113,9 @@ const ForumPage: React.FC = () => {
                         </p>
                     </div>
                 </IonCard>
-                <IonModal className="clear-backdrop" isOpen={showModal}>
-                    <IonHeader>
-                        <IonToolbar>
-                            <IonButtons slot="end">
-                                <IonButton
-                                    onClick={() => {
-                                        setShowModal(false)
-                                    }}
-                                >
-                                    Cancel
-                                </IonButton>
-                            </IonButtons>
-                        </IonToolbar>
-                    </IonHeader>
-                    <IonContent>
-                        <p>This is working yes?</p>
-                    </IonContent>
-                </IonModal>
+                {/* component for post creation */}
+               <CreatePostModal showCreatePostModal={showCreatePostModal} setShowCreatePostModal={setShowCreatePostModal} /> 
+                <UsernameModal showUsernameModal={showUsernameModal} setShowUsernameModal={setShowUsernameModal}/>
             </IonContent>
         </IonPage>
     )

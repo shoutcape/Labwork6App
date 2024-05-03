@@ -14,7 +14,7 @@ import {
 import './SignupAndLogin.css';
 import { Link } from 'react-router-dom';
 import { loginUser } from '../auth/loginUser';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 // react fc must include the values used in the return section
@@ -25,6 +25,8 @@ const LoginPage: React.FC = () => {
     const [showToast, setShowToast] = useState<boolean>(false);
     const [toastMessage, setToastMessage] = useState('');
     const history = useHistory()
+
+
 
     const handleSubmit = async () => {
         setLoading(true);
