@@ -68,7 +68,7 @@ const SignupPage: React.FC = () => {
                     duration={0}
                     isOpen={loading}
                 ></IonLoading>
-                <IonCard>
+                <IonCard className='center'>
                     <IonCardContent>
                         <IonAlert
                             isOpen={!!errorMessage}
@@ -82,7 +82,7 @@ const SignupPage: React.FC = () => {
                                 handleSignup()
                             }}
                         >
-                            <label>Email</label>
+                            <label className='label'>Email</label>
                             <IonInput
                                 id="input"
                                 type="email"
@@ -90,7 +90,7 @@ const SignupPage: React.FC = () => {
                                 onIonChange={(e) => setEmail(e.detail.value!)}
                                 required
                             />
-                            <label>Password</label>
+                            <label className='label'>Password</label>
                             <IonInput
                                 id="input"
                                 type="password"
@@ -100,7 +100,7 @@ const SignupPage: React.FC = () => {
                                 }
                                 required
                             />
-                            <label>Confirm Password</label>
+                            <label className='label'>Confirm Password</label>
                             <IonInput
                                 id="input"
                                 type="password"
@@ -120,7 +120,7 @@ const SignupPage: React.FC = () => {
                         </form>
                     </IonCardContent>
                 </IonCard>
-                <div className="ion-text-center mt-2">
+                <div className="ion-text-center mt-2 noAccount">
                     Already have an account? <Link to="/login">Login</Link>
                 </div>
                 <IonToast

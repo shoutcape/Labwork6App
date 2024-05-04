@@ -66,7 +66,7 @@ const ForumPage: React.FC = () => {
     return (
         <IonPage>
             <IonContent className="ion-padding">
-                <div className="ion-text-center mb-4">Forum</div>
+                <h1 className="ion-text-center mb-4 title" color='primary'>Forum</h1>
                 <div className="ion-text-center">
                     <IonButton
                         className="postButton"
@@ -76,6 +76,8 @@ const ForumPage: React.FC = () => {
                         Post
                     </IonButton>
                 </div>
+                <div className='postsContainer'>
+
                 <IonCard className="userPost">
                     <div className="details">
                         <p className="username">User: Dummy</p>
@@ -98,7 +100,7 @@ const ForumPage: React.FC = () => {
                         </div>
                     </div>
                     <div className="content">
-                        <h4 className="title">Title of the post</h4>
+                        <h4 className="postTitle">Title of the post</h4>
                         <p className="textcontent">
                             Contents of the post go here and may end up being
                             quite long, but thats okay. If neccessary we can
@@ -106,6 +108,7 @@ const ForumPage: React.FC = () => {
                         </p>
                     </div>
                 </IonCard>
+                </div>
                 {/* component for post creation */}
                 <CreatePostModal
                     showCreatePostModal={showCreatePostModal}

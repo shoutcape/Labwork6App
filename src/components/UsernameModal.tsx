@@ -57,19 +57,15 @@ const UsernameModal: React.FC<UsernameModalProps> = ({
             ref={modal}
         >
             <IonContent>
-                <IonGrid>
-                    <form>
-                        <IonInput
-                            style={{ color: 'black' }}
-                            value={username}
-                            // on each change update the username
-                            onIonChange={(e) => setUsername(e.detail.value!)}
-                        ></IonInput>
-                    </form>
-                    <IonButton onClick={submitUsername}>
-                        Create Username
-                    </IonButton>
-                </IonGrid>
+                <IonTitle color='primary'>Looks like you don't have a username yet</IonTitle>
+                <form>
+                    <IonInput
+                        value={username}
+                        // on each change update the username
+                        onIonChange={(e) => setUsername(e.detail.value!)}
+                    ></IonInput>
+                </form>
+                <IonButton onClick={submitUsername}>Create Username</IonButton>
             </IonContent>
         </IonModal>
     )

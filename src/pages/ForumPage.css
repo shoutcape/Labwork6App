@@ -1,14 +1,5 @@
-ion-card {
-  border-radius: 10px;
-  --background: #ffffff;
-}
-
-p {
-  color: black;
-}
 
 .likesandcomments {
-  background-color: rgb(219, 218, 218);
   border-radius: 20px;
   border: solid 1px black;
   display: flex;
@@ -17,13 +8,23 @@ p {
   height: 30px;
   padding: 0px 15px 0px 15px;
   span {
-    color: black;
     margin: 2px 0px 0px 2px;
   }
 }
 
+.postsContainer {
+  display: grid;
+  justify-content: center;
+}
+
 .postButton {
   margin-bottom: 20px;
+  max-width: 600px;
+  margin: auto;
+}
+
+.postTitle {
+  font-weight: bold;
 }
 
 .likes {
@@ -36,11 +37,6 @@ p {
   align-items: center;
 }
 
-ion-icon {
-  color: black;
-  width: 25px;
-  height: 25px;
-}
 
 .rightside {
   display: flex;
@@ -60,10 +56,6 @@ ion-icon {
   align-items: center;
 }
 
-.title {
-  color: black;
-}
-
 .content {
   margin-left: 5px;
 }
@@ -71,37 +63,4 @@ ion-icon {
 .userPost {
   margin-top: 15px;
   padding: 0px 10px 0px 10px;
-}
-
-ion-input {
-  margin-bottom: 20px;
-  border-radius: 10px;
-  border: 1px solid #818181;
-  text-indent: 5px;
-}
-
-
-ion-alert {
-  --background: #ffffff;
-  --border-radius: 8px;
-}
-
-
-.mb-4 {
-  margin-bottom: 1.5rem;
-  font-weight: bold;
-  font-size: 40px;
-  margin: 10px;
-  color: #1a73b3;
-}
-
-.mb-5 {
-  color: gray;
-  font-size: 10px;
-  margin-bottom: 10px;
-}
-
-.mt-2 {
-  margin-top: 1rem;
-  color: gray;
 }

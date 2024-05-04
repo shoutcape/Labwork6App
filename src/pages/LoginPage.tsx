@@ -42,14 +42,14 @@ const LoginPage: React.FC = () => {
     return (
         <IonPage>
             <IonContent id="logincontent" className="ion-padding">
-                <div className="ion-text-center mb-4">Welcome!</div>
-                <div className="ion-text-center mb-5">Log in to the forum</div>
+                <div className="ion-text-center mb-4 title">Welcome!</div>
+                <div className="ion-text-center mb-5 title2">Log in to the forum</div>
                 <IonLoading
                     message={'Logging in please wait...'}
                     duration={0}
                     isOpen={loading}
                 ></IonLoading>
-                <IonCard>
+                <IonCard className='center'>
                     <IonCardContent>
                         <form
                             onSubmit={(e) => {
@@ -57,7 +57,7 @@ const LoginPage: React.FC = () => {
                                 handleSubmit()
                             }}
                         >
-                            <label>Email</label>
+                            <label className='label'>Email</label>
                             <IonInput
                                 id="input"
                                 type="email"
@@ -65,7 +65,7 @@ const LoginPage: React.FC = () => {
                                     setUsername(e.target.value!)
                                 }
                             />
-                            <label>Password</label>
+                            <label className='label'>Password</label>
                             <IonInput
                                 id="input"
                                 type="password"
@@ -83,7 +83,7 @@ const LoginPage: React.FC = () => {
                         </form>
                     </IonCardContent>
                 </IonCard>
-                <div className="ion-text-center mt-2">
+                <div className="ion-text-center mt-2 noAccount">
                     Don't have an account? <Link to="/signup">Sign Up</Link>
                 </div>
                 <IonToast
