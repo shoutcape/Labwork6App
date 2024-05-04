@@ -1,15 +1,20 @@
 
-.likesandcomments {
+.reactionCircle {
   border-radius: 20px;
   border: solid 1px black;
   display: flex;
   justify-content: space-between;
-  width: 140px;
-  height: 30px;
-  padding: 0px 15px 0px 15px;
+  width: fit-content;
+  height: fit-content;
+  padding: 3px 5px 3px 5px;
+  margin-right: 5px;
   span {
     margin: 2px 0px 0px 2px;
   }
+}
+
+.likesAndComments {
+  display: flex;
 }
 
 .postsContainer {
@@ -25,22 +30,28 @@
 
 .postTitle {
   font-weight: bold;
+  margin-top: 5px;
 }
 
 .likes {
   display: flex;
   align-items: center;
+  span {
+    margin-top: 3px;
+  }
 }
 
 .comments {
   display: flex;
   align-items: center;
+  span {
+    margin-top: 3px;
+  }
 }
 
-
-.rightside {
-  display: flex;
-  align-items: center;
+.icon {
+  width: 20px;
+  height: 20px;
 }
 
 .date {
@@ -51,7 +62,6 @@
 }
 
 .details {
-  justify-content: space-between;
   display: flex;
   align-items: center;
 }
@@ -62,5 +72,16 @@
 
 .userPost {
   margin-top: 15px;
-  padding: 0px 10px 0px 10px;
+  padding: 0px 10px 10px 10px;
+}
+
+.usernameForm {
+  display: flex;
+  flex-direction: column;
+  ion-input {
+    margin-top: 10px;
+  }
+  ion-button {
+    margin-top: -10px;
+  }
 }

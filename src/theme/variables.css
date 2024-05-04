@@ -248,11 +248,9 @@ ion-card {
   border-radius: 10px;
 }
 
-ion-input {
+ion-input, ion-textarea {
   border: solid 1px #9d9fa6;
-  color: black;
   border-radius: 10px;
   margin-bottom: 20px;
   text-indent: 5px;
 }
-

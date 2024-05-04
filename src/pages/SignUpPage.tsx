@@ -59,8 +59,8 @@ const SignupPage: React.FC = () => {
                 >
                     <IonIcon icon={arrowBack} size="large" color="medium" />
                 </div>
-                <div className="ion-text-center mb-4">Welcome!</div>
-                <div className="ion-text-center mb-5">
+                <div className="ion-text-center mb-4 title">Welcome!</div>
+                <div className="ion-text-center mb-5 title2">
                     Sign up to get started.
                 </div>
                 <IonLoading

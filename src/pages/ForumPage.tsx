@@ -77,27 +77,12 @@ const ForumPage: React.FC = () => {
                     </IonButton>
                 </div>
                 <div className='postsContainer'>
-
                 <IonCard className="userPost">
                     <div className="details">
                         <p className="username">User: Dummy</p>
-                        <div className="rightside">
-                            <div className="likesandcomments">
-                                <div className="likes">
-                                    <IonIcon icon={thumbsUpOutline}></IonIcon>
-                                    <span>100</span>
-                                </div>
-                                <div className="comments">
-                                    <IonIcon
-                                        icon={chatboxEllipsesOutline}
-                                    ></IonIcon>
-                                    <span>500</span>
-                                </div>
-                            </div>
                             <div className="date">
                                 <p>12/01/2020</p>
                             </div>
-                        </div>
                     </div>
                     <div className="content">
                         <h4 className="postTitle">Title of the post</h4>
@@ -107,6 +92,19 @@ const ForumPage: React.FC = () => {
                             limit the amount of characters that go here.
                         </p>
                     </div>
+                    <div className='likesAndComments'>
+                                <div className="likes reactionCircle">
+                                    <IonIcon  className='icon' icon={thumbsUpOutline}></IonIcon>
+                                    <span>100</span>
+                                </div>
+                                <div className="comments reactionCircle">
+                                    <IonIcon className='icon'
+                                        icon={chatboxEllipsesOutline}
+                                    ></IonIcon>
+                                    <span>500</span>
+                                </div>
+                    </div>
+                            
                 </IonCard>
                 </div>
                 {/* component for post creation */}

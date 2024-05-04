@@ -3,8 +3,10 @@ import {
     IonButtons,
     IonContent,
     IonHeader,
-    IonItem,
+    IonInput,
     IonModal,
+    IonText,
+    IonTextarea,
     IonToolbar,
 } from '@ionic/react'
 import React, { useState } from 'react'
@@ -19,21 +21,25 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({
     showCreatePostModal,
     setShowCreatePostModal,
 }) => {
-    const createNewPost = async () => {
-        const username = firebase.auth().currentUser?.displayName
 
+    const [title, setTitle] = useState('')
+    const [content, setContent] = useState('')
+    const createNewPost = async () => {
+
+        const username = firebase.auth().currentUser?.displayName
         // check if user has username
         if (!username) {
             console.log('Create Username First')
             return
         }
-        const content = 'dummyContent'
+
         // get the timestamp when creating a new post
         const currentDate = new Date()
         const formattedDate = `${currentDate.toLocaleDateString()} ${currentDate.toLocaleTimeString()}`
 
         const newPostData = {
             username: username,
+            title: title,
             content: content,
             likes: 0,
             comments: 0,
@@ -51,7 +57,6 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({
             className="clear-backdrop"
             isOpen={showCreatePostModal}
         >
-            <IonHeader>
                 <IonToolbar color="primary">
                     <IonButtons slot="end">
                         <IonButton
@@ -63,9 +68,26 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({
                         </IonButton>
                     </IonButtons>
                 </IonToolbar>
-            </IonHeader>
-            <IonContent>
-                <p>This is working yes?</p>
+            <IonContent className='ion-padding'>
+                <h1 className='ion-text-center title'>Create A Post</h1>
+                <form>
+                    <label htmlFor="title">Title</label>
+                    <IonTextarea
+                        name='title'
+                        autoGrow={true}
+                        className='input'
+                        value={title}
+                        onIonInput={(e) => setTitle(e.detail.value!)}
+                    />
+                    <label htmlFor="content">Content</label>
+                    <IonTextarea
+                        name='content'
+                        className='input'
+                        autoGrow={true}
+                        value={content}
+                        onIonInput={(e) => setContent(e.detail.value!)}
+                    />
+                </form>
                 <IonButton onClick={createNewPost}>Submit Post</IonButton>
             </IonContent>
         </IonModal>

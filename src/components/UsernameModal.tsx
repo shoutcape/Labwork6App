@@ -1,16 +1,11 @@
 import {
     IonButton,
     IonContent,
-    IonGrid,
-    IonHeader,
     IonInput,
     IonModal,
-    IonPage,
-    IonTitle,
-    IonToolbar,
 } from '@ionic/react'
 import { firebase, db } from '../firebaseConfig'
-import React, { useReducer, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { usernameCheck } from '../auth/usernameCheck'
 
 interface UsernameModalProps {
@@ -26,9 +21,10 @@ const UsernameModal: React.FC<UsernameModalProps> = ({
     const [username, setUsername] = useState('')
     const user = firebase.auth().currentUser
 
-    const submitUsername = async () => {
-        if (!username && username.trim().length < 1) {
-            console.log('Username cant be empty')
+    const submitUsername = async (event:React.FormEvent) => {
+        event.preventDefault()
+        if (!username || username.trim().length < 1) {
+            console.log('failed here is the username:',username)
             return
         }
 
@@ -46,7 +42,9 @@ const UsernameModal: React.FC<UsernameModalProps> = ({
         db.collection('usernames').doc(username).set({
             userId: user?.uid,
         })
-        // close the modal
+        console.log('Username Created:', username)
+        // close the modal and wipe the inputvalue
+        setUsername('')
         modal.current?.dismiss()
     }
 
@@ -56,16 +54,20 @@ const UsernameModal: React.FC<UsernameModalProps> = ({
             isOpen={showUsernameModal}
             ref={modal}
         >
-            <IonContent>
-                <IonTitle color='primary'>Looks like you don't have a username yet</IonTitle>
-                <form>
+            <IonContent className='ion-padding'>
+
+                <form className='usernameForm'
+                    onSubmit={submitUsername}
+                >
+                <h1 className='ion-text-center title'>Create username</h1>
                     <IonInput
                         value={username}
                         // on each change update the username
-                        onIonChange={(e) => setUsername(e.detail.value!)}
-                    ></IonInput>
+                        onIonInput={(e) => setUsername(e.detail.value!)}
+                    />
+                    <IonButton className='usernameSubmit' onClick={submitUsername}>Confirm</IonButton>
                 </form>
-                <IonButton onClick={submitUsername}>Create Username</IonButton>
+
             </IonContent>
         </IonModal>
     )
