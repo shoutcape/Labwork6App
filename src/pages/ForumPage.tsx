@@ -66,7 +66,9 @@ const ForumPage: React.FC = () => {
     return (
         <IonPage>
             <IonContent className="ion-padding">
-                <h1 className="ion-text-center mb-4 title" color='primary'>Forum</h1>
+                <h1 className="ion-text-center mb-4 title" color="primary">
+                    Forum
+                </h1>
                 <div className="ion-text-center">
                     <IonButton
                         className="postButton"
@@ -76,36 +78,40 @@ const ForumPage: React.FC = () => {
                         Post
                     </IonButton>
                 </div>
-                <div className='postsContainer'>
-                <IonCard className="userPost">
-                    <div className="details">
-                        <p className="username">User: Dummy</p>
+                <div className="postsContainer">
+                    <IonCard className="userPost">
+                        <div className="details">
+                            <p className="username">User: Dummy</p>
                             <div className="date">
                                 <p>12/01/2020</p>
                             </div>
-                    </div>
-                    <div className="content">
-                        <h4 className="postTitle">Title of the post</h4>
-                        <p className="textcontent">
-                            Contents of the post go here and may end up being
-                            quite long, but thats okay. If neccessary we can
-                            limit the amount of characters that go here.
-                        </p>
-                    </div>
-                    <div className='likesAndComments'>
-                                <div className="likes reactionCircle">
-                                    <IonIcon  className='icon' icon={thumbsUpOutline}></IonIcon>
-                                    <span>100</span>
-                                </div>
-                                <div className="comments reactionCircle">
-                                    <IonIcon className='icon'
-                                        icon={chatboxEllipsesOutline}
-                                    ></IonIcon>
-                                    <span>500</span>
-                                </div>
-                    </div>
-                            
-                </IonCard>
+                        </div>
+                        <div className="content">
+                            <h4 className="postTitle">Title of the post</h4>
+                            <p className="textcontent">
+                                Contents of the post go here and may end up
+                                being quite long, but thats okay. If neccessary
+                                we can limit the amount of characters that go
+                                here.
+                            </p>
+                        </div>
+                        <div className="likesAndComments">
+                            <div className="likes reactionCircle">
+                                <IonIcon
+                                    className="icon"
+                                    icon={thumbsUpOutline}
+                                ></IonIcon>
+                                <span>100</span>
+                            </div>
+                            <div className="comments reactionCircle">
+                                <IonIcon
+                                    className="icon"
+                                    icon={chatboxEllipsesOutline}
+                                ></IonIcon>
+                                <span>500</span>
+                            </div>
+                        </div>
+                    </IonCard>
                 </div>
                 {/* component for post creation */}
                 <CreatePostModal

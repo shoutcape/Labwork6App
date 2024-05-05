@@ -9,7 +9,7 @@ import {
     IonTextarea,
     IonToolbar,
 } from '@ionic/react'
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { firebase, db } from '../firebaseConfig'
 
 interface CreatePostModalProps {
@@ -24,6 +24,8 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({
 
     const [title, setTitle] = useState('')
     const [content, setContent] = useState('')
+    const modal = useRef<HTMLIonModalElement>(null)
+
     const createNewPost = async () => {
 
         const username = firebase.auth().currentUser?.displayName
@@ -49,6 +51,7 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({
         // select database collection, create new document, set new document contents
         db.collection('posts').doc().set(newPostData)
         console.log('new post added to db')
+        modal.current?.dismiss()
     }
 
     return (
@@ -56,6 +59,8 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({
             onDidDismiss={() => setShowCreatePostModal(false)}
             className="clear-backdrop"
             isOpen={showCreatePostModal}
+            ref={modal}
+            
         >
                 <IonToolbar color="primary">
                     <IonButtons slot="end">
