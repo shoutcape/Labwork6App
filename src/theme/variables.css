@@ -244,9 +244,11 @@ html {
 ion-card {
   --ion-text-color: #000000; 
   color: #000000;
-  max-width: 400px;
+  max-width: 600px;
   border-radius: 10px;
+  margin-bottom: 0px;
 }
+
 
 ion-input, ion-textarea {
   border: solid 1px #9d9fa6;

@@ -1,23 +1,16 @@
 import {
-    IonChip,
     IonPage,
     IonContent,
-    IonToolbar,
     IonButton,
-    IonButtons,
-    IonHeader,
-    IonCard,
-    IonItem,
-    IonIcon,
 } from '@ionic/react'
 import './ForumPage.css'
 import { Redirect, useHistory, useLocation } from 'react-router'
 import { useAuth } from '../auth/useAuth'
 import { firebase, db } from '../firebaseConfig'
 import { useEffect, useRef, useState } from 'react'
-import { chatboxEllipsesOutline, thumbsUpOutline } from 'ionicons/icons'
 import CreatePostModal from '../components/CreatePostModal'
 import UsernameModal from '../components/UsernameModal'
+import PostList from '../components/PostList'
 
 const ForumPage: React.FC = () => {
     // useAuth checks if user is logged in
@@ -41,6 +34,27 @@ const ForumPage: React.FC = () => {
             }
         }
     }, [location])
+
+    useEffect(() => {
+        if (showCreatePostModal || showUsernameModal) {
+            return
+        }
+
+        db.collection('posts').orderBy('createdAt').get().then((snapshot) => {
+            snapshot.forEach((doc) => {
+                const postData = doc.data()
+                const post = {
+                username : postData.username,
+                title : postData.title,
+                content : postData.content,
+                date : postData.createdAt,
+                likes : postData.likes,
+                comments : postData.comments
+                 }
+                 console.log(post)
+            })
+        })
+    }, [showCreatePostModal])
 
     // while loading returns blank page
     if (loading) {
@@ -78,41 +92,7 @@ const ForumPage: React.FC = () => {
                         Post
                     </IonButton>
                 </div>
-                <div className="postsContainer">
-                    <IonCard className="userPost">
-                        <div className="details">
-                            <p className="username">User: Dummy</p>
-                            <div className="date">
-                                <p>12/01/2020</p>
-                            </div>
-                        </div>
-                        <div className="content">
-                            <h4 className="postTitle">Title of the post</h4>
-                            <p className="textcontent">
-                                Contents of the post go here and may end up
-                                being quite long, but thats okay. If neccessary
-                                we can limit the amount of characters that go
-                                here.
-                            </p>
-                        </div>
-                        <div className="likesAndComments">
-                            <div className="likes reactionCircle">
-                                <IonIcon
-                                    className="icon"
-                                    icon={thumbsUpOutline}
-                                ></IonIcon>
-                                <span>100</span>
-                            </div>
-                            <div className="comments reactionCircle">
-                                <IonIcon
-                                    className="icon"
-                                    icon={chatboxEllipsesOutline}
-                                ></IonIcon>
-                                <span>500</span>
-                            </div>
-                        </div>
-                    </IonCard>
-                </div>
+               <PostList/> 
                 {/* component for post creation */}
                 <CreatePostModal
                     showCreatePostModal={showCreatePostModal}
