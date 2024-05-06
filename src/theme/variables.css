@@ -249,10 +249,16 @@ ion-card {
   margin-bottom: 0px;
 }
 
-
-ion-input, ion-textarea {
+ion-input {  
   border: solid 1px #9d9fa6;
   border-radius: 10px;
   margin-bottom: 20px;
   text-indent: 5px;
+}
+
+ion-textarea {
+  border: solid 1px #9d9fa6;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  padding: 0px 10px 0px 10px;
 }

@@ -1,22 +1,29 @@
-import {
-    IonPage,
-    IonContent,
-    IonButton,
-} from '@ionic/react'
+import { IonPage, IonContent, IonButton, IonModal } from '@ionic/react'
 import './ForumPage.css'
 import { Redirect, useHistory, useLocation } from 'react-router'
 import { useAuth } from '../auth/useAuth'
-import { firebase } from '../firebaseConfig'
+import { firebase, db } from '../firebaseConfig'
 import { useEffect, useRef, useState } from 'react'
 import CreatePostModal from '../components/CreatePostModal'
 import UsernameModal from '../components/UsernameModal'
 import PostList from '../components/PostList'
+
+export interface PostData {
+    id: any
+    username: string
+    title: string
+    content: string
+    date: string
+    likes: number
+    comments: number
+}
 
 const ForumPage: React.FC = () => {
     // useAuth checks if user is logged in
     const { loggedIn, loading } = useAuth()
     const [showCreatePostModal, setShowCreatePostModal] = useState(false)
     const [showUsernameModal, setShowUsernameModal] = useState(false)
+    const [posts, setPosts] = useState<PostData[]>([])
     const history = useHistory()
     const location = useLocation()
     const isMounted = useRef(true)
@@ -35,6 +42,28 @@ const ForumPage: React.FC = () => {
         }
     }, [location])
 
+    useEffect(() => {
+        db.collection('posts')
+            .orderBy('createdAt', 'desc')
+            .get()
+            .then((snapshot) => {
+                const fetchedPosts: PostData[] = []
+                snapshot.forEach((doc) => {
+                    const postData = doc.data()
+                    fetchedPosts.push({
+                        id: doc.id,
+                        username: postData.username,
+                        title: postData.title,
+                        content: postData.content,
+                        date: postData.createdAt,
+                        likes: postData.likes,
+                        comments: postData.comments,
+                    })
+                    setPosts(fetchedPosts)
+                })
+            })
+    }, [])
+
     // while loading returns blank page
     if (loading) {
         return <IonPage></IonPage>
@@ -47,7 +76,7 @@ const ForumPage: React.FC = () => {
     const submitPost = () => {
         // check if user has a username
         firebase.auth().onAuthStateChanged(function (user) {
-            if (user?.displayName == null) {
+            if (user?.displayName === null) {
                 console.log('ei käyttäjää')
                 setShowUsernameModal(true)
             } else {
@@ -71,16 +100,25 @@ const ForumPage: React.FC = () => {
                         Post
                     </IonButton>
                 </div>
-               <PostList/> 
-                {/* component for post creation */}
-                <CreatePostModal
-                    showCreatePostModal={showCreatePostModal}
-                    setShowCreatePostModal={setShowCreatePostModal}
-                />
-                <UsernameModal
-                    showUsernameModal={showUsernameModal}
-                    setShowUsernameModal={setShowUsernameModal}
-                />
+                <PostList showCreatePostModal={showCreatePostModal} />
+
+                <IonModal
+                    onDidDismiss={() => setShowCreatePostModal(false)}
+                    isOpen={showCreatePostModal}
+                >
+                    <CreatePostModal
+                        setShowCreatePostModal={setShowCreatePostModal}
+                    />
+                </IonModal>
+
+                <IonModal
+                    onDidDismiss={() => setShowUsernameModal(false)}
+                    isOpen={showUsernameModal}
+                >
+                    <UsernameModal
+                        setShowUsernameModal={setShowUsernameModal}
+                    />
+                </IonModal>
             </IonContent>
         </IonPage>
     )

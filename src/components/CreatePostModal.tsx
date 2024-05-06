@@ -2,28 +2,21 @@ import {
     IonButton,
     IonButtons,
     IonContent,
-    IonHeader,
-    IonInput,
-    IonModal,
-    IonText,
     IonTextarea,
     IonToolbar,
 } from '@ionic/react'
-import React, { useRef, useState } from 'react'
+import React, { useState } from 'react'
 import { firebase, db } from '../firebaseConfig'
 
 interface CreatePostModalProps {
-    showCreatePostModal: boolean
     setShowCreatePostModal: (show: boolean) => void
 }
 
 const CreatePostModal: React.FC<CreatePostModalProps> = ({
-    showCreatePostModal,
     setShowCreatePostModal,
 }) => {
     const [title, setTitle] = useState('')
     const [content, setContent] = useState('')
-    const modal = useRef<HTMLIonModalElement>(null)
 
     const createNewPost = async () => {
         const username = firebase.auth().currentUser?.displayName
@@ -33,51 +26,48 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({
             return
         }
 
-        // get the timestamp when creating a new post
+
+        // const createDummyPosts = async () => {
+        // for (let i = 1; i < 11; i++) {
+        //     // setTimeout to test the currentdate/order of the posts
+        //     await new Promise((resolve) => setTimeout(resolve, 1000))
+        //         const currentDate = new Date()
+        //         const formattedDate = `${currentDate.toLocaleDateString()} ${currentDate.toLocaleTimeString()}`
+        //         const newPostData = {
+        //             username: username + i,
+        //             title: title + i,
+        //             content: content + i,
+        //             likes: 0 + i,
+        //             comments: 0 + i,
+        //             createdAt: formattedDate,
+        //         }
+        //         db.collection('posts').doc().set(newPostData)
+        //         console.log('new post added to db')
+        //     }
+        //     setShowCreatePostModal(false)
+        // }
+        // createDummyPosts()
+
         const currentDate = new Date()
         const formattedDate = `${currentDate.toLocaleDateString()} ${currentDate.toLocaleTimeString()}`
 
-        const createDummyPosts = async () => {
-                for (let i = 1; i < 50; i++) {
-                    setTimeout(() => {
-                        const newPostData = {
-                            username: username + i,
-                            title: title + i,
-                            content: content + i,
-                            likes: 0 + i,
-                            comments: 0 + i,
-                            createdAt: formattedDate,
-                        }
-                        db.collection('posts').doc().set(newPostData)
-                        console.log('new post added to db')
-                    }, 500)
-                }
+        const newPostData = {
+            username: username,
+            title: title,
+            content: content,
+            likes: 0,
+            comments: 0,
+            createdAt: formattedDate,
         }
-            createDummyPosts()
 
-        //     const newPostData = {
-        //         username: username,
-        //         title: title,
-        //         content: content,
-        //         likes: 0,
-        //         comments: 0,
-        //         createdAt: formattedDate,
-        //     }
-        // 
         // select database collection, create new document, set new document contents
-        //     db.collection('posts').doc().set(newPostData)
-        //     console.log('new post added to db')
-        //     modal.current?.dismiss()
-
+        db.collection('posts').doc().set(newPostData)
+        console.log('new post added to db')
+        setShowCreatePostModal(false)
     }
 
     return (
-        <IonModal
-            onDidDismiss={() => setShowCreatePostModal(false)}
-            className="clear-backdrop"
-            isOpen={showCreatePostModal}
-            ref={modal}
-        >
+        <IonContent>
             <IonToolbar color="primary">
                 <IonButtons slot="end">
                     <IonButton
@@ -111,7 +101,7 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({
                 </form>
                 <IonButton onClick={createNewPost}>Submit Post</IonButton>
             </IonContent>
-        </IonModal>
+        </IonContent>
     )
 }
 
