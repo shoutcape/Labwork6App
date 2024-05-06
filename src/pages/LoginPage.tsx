@@ -10,63 +10,64 @@ import {
     IonToolbar,
     IonLoading,
     IonToast,
-} from '@ionic/react';
-import './SignupAndLogin.css';
-import { Link } from 'react-router-dom';
-import { loginUser } from '../auth/loginUser';
-import { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+} from '@ionic/react'
+import './SignupAndLogin.css'
+import { Link } from 'react-router-dom'
+import { loginUser } from '../auth/loginUser'
+import { useEffect, useState } from 'react'
+import { useHistory } from 'react-router-dom'
 
 // react fc must include the values used in the return section
 const LoginPage: React.FC = () => {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [loading, setLoading] = useState<boolean>(false);
-    const [showToast, setShowToast] = useState<boolean>(false);
-    const [toastMessage, setToastMessage] = useState('');
+    const [username, setUsername] = useState('')
+    const [password, setPassword] = useState('')
+    const [loading, setLoading] = useState<boolean>(false)
+    const [showToast, setShowToast] = useState<boolean>(false)
+    const [toastMessage, setToastMessage] = useState('')
     const history = useHistory()
 
     const handleSubmit = async () => {
-        setLoading(true);
+        setLoading(true)
         try {
-            await loginUser(username, password);
-            setToastMessage('Login successful');
-            history.push('/mainpage')
-
+            await loginUser(username, password)
+            setToastMessage('Login successful')
+            history.push('/forumpage')
         } catch (error: any) {
-            setToastMessage(`Login failed: ${error.message}`);
+            setToastMessage(`Login failed: ${error.message}`)
         }
-        setShowToast(true);
-        setLoading(false);
-    };
+        setShowToast(true)
+        setLoading(false)
+    }
 
     return (
         <IonPage>
             <IonContent id="logincontent" className="ion-padding">
-            <div className="ion-text-center mb-4">Welcome!</div>
-            <div className="ion-text-center mb-5">Log in to the forum</div>
+                <div className="ion-text-center mb-4 title">Welcome!</div>
+                <div className="ion-text-center mb-5 title2">Log in to the forum</div>
                 <IonLoading
                     message={'Logging in please wait...'}
                     duration={0}
                     isOpen={loading}
                 ></IonLoading>
-                <IonCard>
+                <IonCard className='center'>
                     <IonCardContent>
                         <form
                             onSubmit={(e) => {
-                                e.preventDefault();
-                                handleSubmit();
+                                e.preventDefault()
+                                handleSubmit()
                             }}
                         >
-                            <label>Email</label>
+                            <label className='label'>Email</label>
                             <IonInput
+                                id="input"
                                 type="email"
                                 onIonChange={(e: any) =>
                                     setUsername(e.target.value!)
                                 }
                             />
-                            <label>Password</label>
+                            <label className='label'>Password</label>
                             <IonInput
+                                id="input"
                                 type="password"
                                 onIonChange={(e: any) =>
                                     setPassword(e.target.value!)
@@ -82,7 +83,7 @@ const LoginPage: React.FC = () => {
                         </form>
                     </IonCardContent>
                 </IonCard>
-                <div className="ion-text-center mt-2">
+                <div className="ion-text-center mt-2 noAccount">
                     Don't have an account? <Link to="/signup">Sign Up</Link>
                 </div>
                 <IonToast
@@ -93,7 +94,7 @@ const LoginPage: React.FC = () => {
                 ></IonToast>
             </IonContent>
         </IonPage>
-    );
-};
+    )
+}
 
-export default LoginPage;
+export default LoginPage

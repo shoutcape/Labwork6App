@@ -76,7 +76,7 @@ http://ionicframework.com/docs/theming/ */
   --ion-color-light-tint: #f5f6f9;
 }
 
-@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: light) {
   /*
    * Dark Colors
    * -------------------------------------------
@@ -239,4 +239,20 @@ html {
   /* For more information on dynamic font scaling, visit the documentation: 
   https://ionicframework.com/docs/layout/dynamic-font-scaling */
   --ion-dynamic-font: var(--ion-default-dynamic-font);
+}
+
+ion-card {
+  --ion-text-color: #000000; 
+  color: #000000;
+  max-width: 600px;
+  border-radius: 10px;
+  margin-bottom: 0px;
+}
+
+
+ion-input, ion-textarea {
+  border: solid 1px #9d9fa6;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  text-indent: 5px;
 }

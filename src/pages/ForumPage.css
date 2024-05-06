@@ -1,0 +1,102 @@
+
+.reactionCircle {
+  border-radius: 20px;
+  border: solid 1px black;
+  display: flex;
+  justify-content: space-between;
+  width: fit-content;
+  height: fit-content;
+  padding: 3px 5px 3px 5px;
+  margin-right: 5px;
+  span {
+    margin: 2px 0px 0px 2px;
+  }
+}
+
+.likesAndComments {
+  display: flex;
+}
+
+.postsContainer {
+  display: grid;
+  grid-template-columns: repeat(3, 3fr);
+  grid-row-gap: 0px;
+  align-items: center;
+  margin: auto;
+  max-width: 1800px;
+}
+@media (max-width: 768px) {
+  .postsContainer {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .postsContainer {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
+.postButton {
+  margin-bottom: 20px;
+  max-width: 600px;
+  margin: auto;
+}
+
+.postTitle {
+  font-weight: bold;
+  margin-top: 5px;
+}
+
+.likes {
+  display: flex;
+  align-items: center;
+  span {
+    margin-top: 3px;
+  }
+}
+
+.comments {
+  display: flex;
+  align-items: center;
+  span {
+    margin-top: 3px;
+  }
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
+}
+
+.date {
+  text-align: center;
+  display: flex;
+  align-items: center;
+  margin-left: 15px;
+}
+
+.details {
+  display: flex;
+  align-items: center;
+}
+
+.content {
+  margin-left: 5px;
+}
+
+.userPost {
+  margin-top: 15px;
+  padding: 0px 10px 10px 10px;
+}
+
+.usernameForm {
+  display: flex;
+  flex-direction: column;
+  ion-input {
+    margin-top: 10px;
+  }
+  ion-button {
+    margin-top: -10px;
+  }
+}
