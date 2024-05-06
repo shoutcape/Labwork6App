@@ -63,11 +63,12 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({
         //         comments: 0,
         //         createdAt: formattedDate,
         //     }
-
+        // 
         // select database collection, create new document, set new document contents
         //     db.collection('posts').doc().set(newPostData)
         //     console.log('new post added to db')
         //     modal.current?.dismiss()
+
     }
 
     return (

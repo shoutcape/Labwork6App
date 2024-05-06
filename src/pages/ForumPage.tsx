@@ -6,7 +6,7 @@ import {
 import './ForumPage.css'
 import { Redirect, useHistory, useLocation } from 'react-router'
 import { useAuth } from '../auth/useAuth'
-import { firebase, db } from '../firebaseConfig'
+import { firebase } from '../firebaseConfig'
 import { useEffect, useRef, useState } from 'react'
 import CreatePostModal from '../components/CreatePostModal'
 import UsernameModal from '../components/UsernameModal'
@@ -34,27 +34,6 @@ const ForumPage: React.FC = () => {
             }
         }
     }, [location])
-
-    useEffect(() => {
-        if (showCreatePostModal || showUsernameModal) {
-            return
-        }
-
-        db.collection('posts').orderBy('createdAt').get().then((snapshot) => {
-            snapshot.forEach((doc) => {
-                const postData = doc.data()
-                const post = {
-                username : postData.username,
-                title : postData.title,
-                content : postData.content,
-                date : postData.createdAt,
-                likes : postData.likes,
-                comments : postData.comments
-                 }
-                 console.log(post)
-            })
-        })
-    }, [showCreatePostModal])
 
     // while loading returns blank page
     if (loading) {
