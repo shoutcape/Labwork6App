@@ -27,43 +27,42 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({
         }
 
 
-        // const createDummyPosts = async () => {
-        // for (let i = 1; i < 11; i++) {
-        //     // setTimeout to test the currentdate/order of the posts
-        //     await new Promise((resolve) => setTimeout(resolve, 1000))
-        //         const currentDate = new Date()
-        //         const formattedDate = `${currentDate.toLocaleDateString()} ${currentDate.toLocaleTimeString()}`
-        //         const newPostData = {
-        //             username: username + i,
-        //             title: title + i,
-        //             content: content + i,
-        //             likes: 0 + i,
-        //             comments: 0 + i,
-        //             createdAt: formattedDate,
-        //         }
-        //         db.collection('posts').doc().set(newPostData)
-        //         console.log('new post added to db')
-        //     }
-        //     setShowCreatePostModal(false)
-        // }
-        // createDummyPosts()
-
-        const currentDate = new Date()
-        const formattedDate = `${currentDate.toLocaleDateString()} ${currentDate.toLocaleTimeString()}`
-
-        const newPostData = {
-            username: username,
-            title: title,
-            content: content,
-            likes: 0,
-            comments: 0,
-            createdAt: formattedDate,
+        const createDummyPosts = async () => {
+        for (let i = 1; i < 11; i++) {
+            // setTimeout to test the currentdate/order of the posts
+            await new Promise((resolve) => setTimeout(resolve, 1000))
+                const currentDate = new Date()
+                const formattedDate = `${currentDate.toLocaleDateString()} ${currentDate.toLocaleTimeString()}`
+                const newPostData = {
+                    username: username + i,
+                    title: title + i,
+                    content: content + i,
+                    likes: 0 + i,
+                    comments: 0 + i,
+                    createdAt: formattedDate,
+                }
+                db.collection('posts').doc().set(newPostData)
+                console.log('new post added to db')
+            }
+            setShowCreatePostModal(false)
         }
+        createDummyPosts()
 
-        // select database collection, create new document, set new document contents
-        db.collection('posts').doc().set(newPostData)
-        console.log('new post added to db')
-        setShowCreatePostModal(false)
+        // const currentDate = new Date()
+        // const formattedDate = `${currentDate.toLocaleDateString()} ${currentDate.toLocaleTimeString()}`
+        // const newPostData = {
+        //     username: username,
+        //     title: title,
+        //     content: content,
+        //     likes: 0,
+        //     comments: 0,
+        //     createdAt: formattedDate,
+        // }
+        // // select database collection, create new document, set new document contents
+        // db.collection('posts').doc().set(newPostData)
+        // console.log('new post added to db')
+        // setShowCreatePostModal(false)
+
     }
 
     return (
