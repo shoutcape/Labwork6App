@@ -31,12 +31,15 @@ const PostList: React.FC<props> = ({ showCreatePostModal }) => {
                     const fetchedPosts: PostData[] = []
                     snapshot.forEach((doc) => {
                         const postData = doc.data()
+                        const date = postData.createdAt
+                        // remove seconds from timestamp to only show HH:MM
+                        const formattedDate = date.slice(0, -3)
                         fetchedPosts.push({
                             id: doc.id,
                             username: postData.username,
                             title: postData.title,
                             content: postData.content,
-                            date: postData.createdAt,
+                            date: formattedDate,
                             likes: postData.likes,
                             comments: postData.comments,
                         })
@@ -52,7 +55,7 @@ const PostList: React.FC<props> = ({ showCreatePostModal }) => {
         <div className="postsContainer">
             {posts &&
                 posts.map((post: PostData) => (
-                    <IonCard key={post.id} className="userPost">
+                    <IonCard key={post.id} className="userPost" routerLink={`/Postpage/${post.id}`}>
                         <div className="details">
                             <p className="username">User: {post.username}</p>
                             <div className="date">

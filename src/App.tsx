@@ -4,6 +4,7 @@ import { IonReactRouter } from '@ionic/react-router'
 import LoginPage from './pages/LoginPage'
 import SignupPage from './pages/SignUpPage'
 import ForumPage from './pages/ForumPage'
+import PostPage from './pages/PostPage'
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css'
@@ -30,15 +31,10 @@ const App: React.FC = () => (
     <IonApp>
         <IonReactRouter>
             <IonRouterOutlet>
-                <Route exact path="/login">
-                    <LoginPage />
-                </Route>
-                <Route exact path="/signup">
-                    <SignupPage />
-                </Route>
-                <Route exact path="/forumpage">
-                    <ForumPage />
-                </Route>
+                <Route exact path="/login" component={LoginPage}/>
+                <Route exact path="/signup" component={SignupPage}/>
+                <Route exact path="/forumpage" component={ForumPage}/>
+                <Route exact path="/postpage/:id" component={PostPage}/>
                 <Route exact path="/">
                     <Redirect to="/login" />
                 </Route>
