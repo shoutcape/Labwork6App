@@ -1,4 +1,4 @@
-import { IonCard, IonIcon } from '@ionic/react'
+import { IonCard, IonIcon, IonRouterLink } from '@ionic/react'
 import { chatboxEllipsesOutline, thumbsUpOutline } from 'ionicons/icons'
 import React, { useEffect, useState } from 'react'
 import { db } from '../firebaseConfig'
@@ -55,34 +55,41 @@ const PostList: React.FC<props> = ({ showCreatePostModal }) => {
         <div className="postsContainer">
             {posts &&
                 posts.map((post: PostData) => (
-                    <IonCard key={post.id} className="userPost" routerLink={`/Postpage/${post.id}`}>
-                        <div className="details">
-                            <p className="username">User: {post.username}</p>
-                            <div className="date">
-                                <p>{post.date}</p>
+                    <IonRouterLink
+                        key={post.id}
+                        routerLink={`/Postpage/${post.id}`}
+                    >
+                        <IonCard className="userPost">
+                            <div className="details">
+                                <p className="username">
+                                    User: {post.username}
+                                </p>
+                                <div className="date">
+                                    <p>{post.date}</p>
+                                </div>
                             </div>
-                        </div>
-                        <div className="content">
-                            <h4 className="postTitle">{post.title}</h4>
-                            <p className="textcontent">{post.content}</p>
-                        </div>
-                        <div className="likesAndComments">
-                            <div className="likes reactionCircle">
-                                <IonIcon
-                                    className="icon"
-                                    icon={thumbsUpOutline}
-                                ></IonIcon>
-                                <span>{post.likes}</span>
+                            <div className="content">
+                                <h4 className="postTitle">{post.title}</h4>
+                                <p className="textcontent">{post.content}</p>
                             </div>
-                            <div className="comments reactionCircle">
-                                <IonIcon
-                                    className="icon"
-                                    icon={chatboxEllipsesOutline}
-                                ></IonIcon>
-                                <span>{post.comments}</span>
+                            <div className="likesAndComments">
+                                <div className="likes reactionCircle">
+                                    <IonIcon
+                                        className="icon"
+                                        icon={thumbsUpOutline}
+                                    ></IonIcon>
+                                    <span>{post.likes}</span>
+                                </div>
+                                <div className="comments reactionCircle">
+                                    <IonIcon
+                                        className="icon"
+                                        icon={chatboxEllipsesOutline}
+                                    ></IonIcon>
+                                    <span>{post.comments}</span>
+                                </div>
                             </div>
-                        </div>
-                    </IonCard>
+                        </IonCard>
+                    </IonRouterLink>
                 ))}
         </div>
     )
