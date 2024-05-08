@@ -57,7 +57,7 @@ const PostPage: React.FC = () => {
             <IonHeader>
                 <IonToolbar>
                     <IonButtons>
-                        <IonButton>
+                        <IonButton routerLink='/forumpage'>
                             <IonIcon icon={arrowBack}></IonIcon>
                         </IonButton>
                     </IonButtons>
