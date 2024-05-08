@@ -27,7 +27,6 @@ const ForumPage: React.FC = () => {
     const location = useLocation()
     const isMounted = useRef(true)
 
-
     // Close the modals on page change
     useEffect(() => {
         if (location.pathname === '/forumpage') {

@@ -26,11 +26,10 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({
             return
         }
 
-
         const createDummyPosts = async () => {
-        for (let i = 1; i < 11; i++) {
-            // setTimeout to test the currentdate/order of the posts
-            await new Promise((resolve) => setTimeout(resolve, 1000))
+            for (let i = 1; i < 11; i++) {
+                // setTimeout to test the currentdate/order of the posts
+                await new Promise((resolve) => setTimeout(resolve, 1000))
                 const currentDate = new Date()
                 const formattedDate = `${currentDate.toLocaleDateString()} ${currentDate.toLocaleTimeString()}`
                 const newPostData = {
@@ -62,7 +61,6 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({
         // db.collection('posts').doc().set(newPostData)
         // console.log('new post added to db')
         // setShowCreatePostModal(false)
-
     }
 
     return (

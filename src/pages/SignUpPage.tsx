@@ -68,7 +68,7 @@ const SignupPage: React.FC = () => {
                     duration={0}
                     isOpen={loading}
                 ></IonLoading>
-                <IonCard className='center'>
+                <IonCard className="center">
                     <IonCardContent>
                         <IonAlert
                             isOpen={!!errorMessage}
@@ -82,7 +82,7 @@ const SignupPage: React.FC = () => {
                                 handleSignup()
                             }}
                         >
-                            <label className='label'>Email</label>
+                            <label className="label">Email</label>
                             <IonInput
                                 id="input"
                                 type="email"
@@ -90,7 +90,7 @@ const SignupPage: React.FC = () => {
                                 onIonChange={(e) => setEmail(e.detail.value!)}
                                 required
                             />
-                            <label className='label'>Password</label>
+                            <label className="label">Password</label>
                             <IonInput
                                 id="input"
                                 type="password"
@@ -100,7 +100,7 @@ const SignupPage: React.FC = () => {
                                 }
                                 required
                             />
-                            <label className='label'>Confirm Password</label>
+                            <label className="label">Confirm Password</label>
                             <IonInput
                                 id="input"
                                 type="password"

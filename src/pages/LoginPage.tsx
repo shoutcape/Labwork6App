@@ -3,18 +3,15 @@ import {
     IonCard,
     IonCardContent,
     IonContent,
-    IonHeader,
     IonInput,
     IonPage,
-    IonTitle,
-    IonToolbar,
     IonLoading,
     IonToast,
 } from '@ionic/react'
 import './SignupAndLogin.css'
 import { Link } from 'react-router-dom'
 import { loginUser } from '../auth/loginUser'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 
 // react fc must include the values used in the return section
@@ -43,13 +40,15 @@ const LoginPage: React.FC = () => {
         <IonPage>
             <IonContent id="logincontent" className="ion-padding">
                 <div className="ion-text-center mb-4 title">Welcome!</div>
-                <div className="ion-text-center mb-5 title2">Log in to the forum</div>
+                <div className="ion-text-center mb-5 title2">
+                    Log in to the forum
+                </div>
                 <IonLoading
                     message={'Logging in please wait...'}
                     duration={0}
                     isOpen={loading}
                 ></IonLoading>
-                <IonCard className='center'>
+                <IonCard className="center">
                     <IonCardContent>
                         <form
                             onSubmit={(e) => {
@@ -57,7 +56,7 @@ const LoginPage: React.FC = () => {
                                 handleSubmit()
                             }}
                         >
-                            <label className='label'>Email</label>
+                            <label className="label">Email</label>
                             <IonInput
                                 id="input"
                                 type="email"
@@ -65,7 +64,7 @@ const LoginPage: React.FC = () => {
                                     setUsername(e.target.value!)
                                 }
                             />
-                            <label className='label'>Password</label>
+                            <label className="label">Password</label>
                             <IonInput
                                 id="input"
                                 type="password"

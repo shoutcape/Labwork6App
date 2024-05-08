@@ -1,30 +1,36 @@
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
-import React, { useEffect, useState } from 'react';
-import { db } from '../firebaseConfig';
-import { useParams } from 'react-router';
-import { PostData } from './ForumPage';
+import {
+    IonContent,
+    IonHeader,
+    IonPage,
+    IonTitle,
+    IonToolbar,
+} from '@ionic/react'
+import React, { useEffect, useState } from 'react'
+import { db } from '../firebaseConfig'
+import { useParams } from 'react-router'
+import { PostData } from './ForumPage'
 
 const PostPage: React.FC = () => {
-    const { postId } = useParams<{ postId: string }>();
-    const [postData, setPostData] = useState<PostData | null>(null);
+    const { postId } = useParams<{ postId: string }>()
+    const [postData, setPostData] = useState<PostData | null>(null)
 
     useEffect(() => {
         const fetchPostData = async () => {
             try {
-                const postRef = db.collection('posts').doc(postId);
-                const doc = await postRef.get();
+                const postRef = db.collection('posts').doc(postId)
+                const doc = await postRef.get()
                 if (doc.exists) {
-                    const postData = doc.data() as PostData;
-                    setPostData(postData);
+                    const postData = doc.data() as PostData
+                    setPostData(postData)
                 } else {
-                    console.log('Document not found');
+                    console.log('Document not found')
                 }
             } catch (error) {
-                console.error('Error fetching document:', error);
+                console.error('Error fetching document:', error)
             }
-        };
-        fetchPostData();
-    }, [postId]);
+        }
+        fetchPostData()
+    }, [postId])
 
     if (!postData) {
         return (
@@ -38,7 +44,7 @@ const PostPage: React.FC = () => {
                     <p>Loading...</p>
                 </IonContent>
             </IonPage>
-        );
+        )
     }
 
     return (
@@ -56,7 +62,7 @@ const PostPage: React.FC = () => {
                 <p>Comments: {postData.comments}</p>
             </IonContent>
         </IonPage>
-    );
+    )
 }
 
-export default PostPage;
+export default PostPage
