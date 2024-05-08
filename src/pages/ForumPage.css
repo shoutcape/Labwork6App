@@ -109,6 +109,14 @@
 }
 
 
+  .active {
+    margin: 50px;
+    padding: 100px;
+    span, ion-icon {
+      color: blue;
+    }
+  }
+
 .usernameForm {
   display: flex;
   flex-direction: column;

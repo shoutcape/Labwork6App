@@ -13,6 +13,7 @@ import React, { useEffect, useState } from 'react'
 import { db } from '../firebaseConfig'
 import { useParams } from 'react-router'
 import { PostData } from './ForumPage'
+import { likeCheck } from '../helpers/checkLiked'
 import {
     arrowBack,
     chatboxEllipsesOutline,
@@ -22,6 +23,7 @@ import {
 const PostPage: React.FC = () => {
     const { postId } = useParams<{ postId: string }>()
     const [postData, setPostData] = useState<PostData | null>(null)
+    const [isActive, setIsActive] = useState(false)
 
     useEffect(() => {
         const fetchPostData = async () => {
@@ -40,6 +42,14 @@ const PostPage: React.FC = () => {
         }
         fetchPostData()
     }, [postId])
+
+    const postLiked = async () => {
+       setIsActive(!isActive) 
+       if (postData) {
+            const userHasLiked = await likeCheck(postData.id)
+            console.log(userHasLiked)
+       }
+    }
 
     if (!postData) {
         return (
@@ -82,9 +92,10 @@ const PostPage: React.FC = () => {
                     </div>
                     <div className="likesAndComments">
                         <IonButton
+                            onClick={postLiked}
                             size="small"
                             fill="clear"
-                            className="likes reactionCircle"
+                            className={isActive ? 'active likes reactionCircle': 'likes reactionCircle'}
                         >
                             <div>
                                 <IonIcon

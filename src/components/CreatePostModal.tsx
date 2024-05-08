@@ -32,7 +32,9 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({
                 await new Promise((resolve) => setTimeout(resolve, 1000))
                 const currentDate = new Date()
                 const formattedDate = `${currentDate.toLocaleDateString()} ${currentDate.toLocaleTimeString()}`
+                const newPost = db.collection('posts').doc()
                 const newPostData = {
+                    id : newPost.id,
                     username: username + i,
                     title: title + i,
                     content: content + i,
@@ -40,7 +42,7 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({
                     comments: 0 + i,
                     createdAt: formattedDate,
                 }
-                db.collection('posts').doc().set(newPostData)
+                newPost.set(newPostData)
                 console.log('new post added to db')
             }
             setShowCreatePostModal(false)

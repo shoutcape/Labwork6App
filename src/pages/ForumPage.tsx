@@ -9,7 +9,7 @@ import UsernameModal from '../components/UsernameModal'
 import PostList from '../components/PostList'
 
 export interface PostData {
-    id: any
+    id: string
     username: string
     title: string
     content: string
