@@ -13,7 +13,7 @@ export interface PostData {
     username: string
     title: string
     content: string
-    date: string
+    createdAt: string
     likes: number
     comments: number
 }
@@ -55,7 +55,7 @@ const ForumPage: React.FC = () => {
                         username: postData.username,
                         title: postData.title,
                         content: postData.content,
-                        date: postData.createdAt,
+                        createdAt: postData.createdAt,
                         likes: postData.likes,
                         comments: postData.comments,
                     })

@@ -2,15 +2,7 @@ import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/rea
 import React, { useEffect, useState } from 'react';
 import { db } from '../firebaseConfig';
 import { useParams } from 'react-router';
-
-interface PostData {
-    username: string;
-    title: string;
-    content: string;
-    date: string;
-    likes: number;
-    comments: number;
-}
+import { PostData } from './ForumPage';
 
 const PostPage: React.FC = () => {
     const { postId } = useParams<{ postId: string }>();
@@ -58,7 +50,7 @@ const PostPage: React.FC = () => {
             </IonHeader>
             <IonContent className="ion-padding">
                 <p>User: {postData.username}</p>
-                <p>Created: {postData.date}</p>
+                <p>Created: {postData.createdAt}</p>
                 <p>Content: {postData.content}</p>
                 <p>Likes: {postData.likes}</p>
                 <p>Comments: {postData.comments}</p>
