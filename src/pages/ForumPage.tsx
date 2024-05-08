@@ -27,10 +27,10 @@ const ForumPage: React.FC = () => {
     const location = useLocation()
     const isMounted = useRef(true)
 
-    // Close the modals on page change
     useEffect(() => {
         if (location.pathname === '/forumpage') {
             const unlisten = history.listen(() => {
+                // Close the modals on page change
                 setShowUsernameModal(false)
                 setShowCreatePostModal(false)
             })
@@ -40,6 +40,7 @@ const ForumPage: React.FC = () => {
             }
         }
     }, [location])
+
 
     // while loading returns blank page
     if (loading) {

@@ -61,6 +61,7 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({
         // db.collection('posts').doc().set(newPostData)
         // console.log('new post added to db')
         // setShowCreatePostModal(false)
+
     }
 
     return (

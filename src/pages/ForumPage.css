@@ -3,14 +3,9 @@
   border-radius: 20px;
   border: solid 1px black;
   display: flex;
-  justify-content: space-between;
-  width: fit-content;
-  height: fit-content;
-  padding: 3px 5px 3px 5px;
-  margin-right: 5px;
-  span {
-    margin: 2px 0px 0px 2px;
-  }
+  background-color: rgb(240, 240, 240);
+  gap: 2px;
+  padding: 3px 7px 3px 7px;
 }
 
 
@@ -98,6 +93,16 @@
 .likesAndComments {
   display: flex;
   margin-top: auto;
+  gap: 7px;
+  ion-button {
+    margin: 0px;
+  }
+  div {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  color: black;
+  }
 }
 
 
