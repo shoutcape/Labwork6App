@@ -127,7 +127,7 @@ const PostPage: React.FC = () => {
                                     className="icon"
                                     icon={chatboxEllipsesOutline}
                                 ></IonIcon>
-                                <span>{postData.comments}</span>
+                                <span>{postData.comments.length}</span>
                             </div>
                         </IonButton>
                     </div>
