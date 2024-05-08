@@ -103,6 +103,9 @@
   gap: 3px;
   color: black;
   }
+  ion-button {
+    padding: 0px;
+  }
 }
 
 

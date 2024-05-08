@@ -13,7 +13,11 @@ import React, { useEffect, useState } from 'react'
 import { db } from '../firebaseConfig'
 import { useParams } from 'react-router'
 import { PostData } from './ForumPage'
-import { arrowBack, chatboxEllipsesOutline, thumbsUpOutline } from 'ionicons/icons'
+import {
+    arrowBack,
+    chatboxEllipsesOutline,
+    thumbsUpOutline,
+} from 'ionicons/icons'
 
 const PostPage: React.FC = () => {
     const { postId } = useParams<{ postId: string }>()
@@ -57,7 +61,7 @@ const PostPage: React.FC = () => {
             <IonHeader>
                 <IonToolbar>
                     <IonButtons>
-                        <IonButton routerLink='/forumpage'>
+                        <IonButton routerLink="/forumpage">
                             <IonIcon icon={arrowBack}></IonIcon>
                         </IonButton>
                     </IonButtons>
@@ -77,27 +81,34 @@ const PostPage: React.FC = () => {
                         <p className="textcontent">{postData.content}</p>
                     </div>
                     <div className="likesAndComments">
-                        <IonButton size='small' fill='clear' className="likes reactionCircle">
+                        <IonButton
+                            size="small"
+                            fill="clear"
+                            className="likes reactionCircle"
+                        >
                             <div>
-                            <IonIcon
-                                className="icon"
-                                icon={thumbsUpOutline}
-                            ></IonIcon>
-                            <span>{postData.likes}</span>
+                                <IonIcon
+                                    className="icon"
+                                    icon={thumbsUpOutline}
+                                ></IonIcon>
+                                <span>{postData.likes}</span>
                             </div>
                         </IonButton>
 
-                        <IonButton size='small' fill='clear' className="comments reactionCircle">
+                        <IonButton
+                            size="small"
+                            fill="clear"
+                            className="comments reactionCircle"
+                        >
                             <div>
-                            <IonIcon
-                                className="icon"
-                                icon={chatboxEllipsesOutline}
-                            ></IonIcon>
-                            <span>{postData.comments}</span>
+                                <IonIcon
+                                    className="icon"
+                                    icon={chatboxEllipsesOutline}
+                                ></IonIcon>
+                                <span>{postData.comments}</span>
                             </div>
                         </IonButton>
                     </div>
-                    
                 </IonCard>
             </IonContent>
         </IonPage>
