@@ -108,7 +108,7 @@ const PostPage: React.FC = () => {
                 </IonToolbar>
             </IonHeader>
             <IonContent className="ion-padding">
-                <IonCard className="userPost">
+                <IonCard className="userPost"  style={{ margin: '9px' }}>
                     <div className="details">
                         <p className="username">User: {postData.username}</p>
                         <div className="date">
@@ -152,11 +152,11 @@ const PostPage: React.FC = () => {
                     </div>
                 </IonCard>
                 {commenting && (
-                    <IonCard>
-                        <IonList>
+                    <>
                             {Array.isArray(postData.comments) &&
                                 postData.comments.map((comment, index) => (
-                                    <IonItem key={index}>
+                                    <IonCard key={index}>
+                                    <IonItem>
                                         <IonLabel>{comment.content}</IonLabel>
                                         {comment.createdAt &&
                                             new Date(
@@ -175,10 +175,12 @@ const PostPage: React.FC = () => {
                                                         minute: '2-digit',
                                                     })}
                                                 </p>
+                                            
                                             )}
                                     </IonItem>
+                                    </IonCard>
                                 ))}
-                        </IonList>
+                        <IonCard className='ion-padding'>
                         <IonItem>
                             <IonTextarea
                                 placeholder="Write a comment..."
@@ -187,14 +189,15 @@ const PostPage: React.FC = () => {
                                     setCommentContent(e.detail.value!)
                                 }
                             ></IonTextarea>
-                            <IonButton slot="end" onClick={handleComment}>
+                            <IonButton slot="end" onClick={handleComment} style={{marginBottom: '15px'}}>
                                 <IonIcon icon={sendOutline}></IonIcon>
                             </IonButton>
                         </IonItem>
                     </IonCard>
+                    </>
                 )}
-            </IonContent>
-        </IonPage>
+        </IonContent>
+    </IonPage>
     )
 }
 
