@@ -1,4 +1,4 @@
-import { IonCard, IonIcon, IonRouterLink } from '@ionic/react'
+import { IonCard, IonIcon, IonRouterLink, useIonViewWillEnter } from '@ionic/react'
 import { chatboxEllipsesOutline, thumbsUpOutline } from 'ionicons/icons'
 import React, { useEffect, useState } from 'react'
 import { db } from '../firebaseConfig'
@@ -12,9 +12,8 @@ interface props {
 const PostList: React.FC<props> = ({ showCreatePostModal }) => {
     const [posts, setPosts] = useState<PostData[]>([])
 
-    useEffect(() => {
+    const fetchPosts = () => {
         // check if for modal so the new posts are only fetched when closing the post creation modal
-        if (!showCreatePostModal) {
             db.collection('posts')
                 .orderBy('createdAt', 'desc')
                 .get()
@@ -40,7 +39,18 @@ const PostList: React.FC<props> = ({ showCreatePostModal }) => {
             console.log('newPosts Fetched...')
         }
         // each time the createPostModal state changes fetch the posts from the database
-    }, [showCreatePostModal])
+
+        useIonViewWillEnter(() => {
+            if (!showCreatePostModal) {
+            fetchPosts()
+            }
+        })
+
+        useEffect(() => {
+            if (!showCreatePostModal) {
+                fetchPosts()
+            }
+        }, [showCreatePostModal])
 
     return (
         <div className="postsContainer">

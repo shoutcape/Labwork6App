@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from 'react'
 import CreatePostModal from '../components/CreatePostModal'
 import UsernameModal from '../components/UsernameModal'
 import PostList from '../components/PostList'
+import { render } from '@testing-library/react'
 
 export interface PostData {
     id: string
