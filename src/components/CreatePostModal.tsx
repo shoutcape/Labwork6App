@@ -34,13 +34,19 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({
                 const formattedDate = `${currentDate.toLocaleDateString()} ${currentDate.toLocaleTimeString()}`
                 const newPost = db.collection('posts').doc()
                 const newPostData = {
-                    id : newPost.id,
+                    id: newPost.id,
                     username: username + i,
                     title: title + i,
                     content: content + i,
                     // create dummy arrays for likes and comments
-                    likes: Array.from({length:i}, (_, index) => `user${index+1}`),
-                    comments:  Array.from({length:i}, (_, index) => `comments${index+1}`),
+                    likes: Array.from(
+                        { length: i },
+                        (_, index) => `user${index + 1}`
+                    ),
+                    comments: Array.from({ length: i }, (_, index) => ({
+                        content: `comment${index + 1}`,
+                        createdAt: new Date().toISOString(),
+                    })),
                     createdAt: formattedDate,
                 }
                 newPost.set(newPostData)
@@ -64,7 +70,6 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({
         // db.collection('posts').doc().set(newPostData)
         // console.log('new post added to db')
         // setShowCreatePostModal(false)
-
     }
 
     return (
