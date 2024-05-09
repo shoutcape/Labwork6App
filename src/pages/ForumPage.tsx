@@ -14,8 +14,8 @@ export interface PostData {
     title: string
     content: string
     createdAt: string
-    likes: number
-    comments: number
+    likes: string[]
+    comments: string[]
 }
 
 const ForumPage: React.FC = () => {

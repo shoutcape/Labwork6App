@@ -69,14 +69,14 @@ const PostList: React.FC<props> = ({ showCreatePostModal }) => {
                                         className="icon"
                                         icon={thumbsUpOutline}
                                     ></IonIcon>
-                                    <span>{post.likes}</span>
+                                    <span>{post.likes.length}</span>
                                 </div>
                                 <div className="comments reactionCircle">
                                     <IonIcon
                                         className="icon"
                                         icon={chatboxEllipsesOutline}
                                     ></IonIcon>
-                                    <span>{post.comments}</span>
+                                    <span>{post.comments.length}</span>
                                 </div>
                             </div>
                         </IonCard>

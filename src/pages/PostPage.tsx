@@ -23,6 +23,7 @@ import {
     sendOutline,
     thumbsUpOutline,
 } from 'ionicons/icons'
+import { handleLikes } from '../helpers/likesAndComments'
 
 const PostPage: React.FC = () => {
     const { postId } = useParams<{ postId: string }>()
@@ -50,18 +51,16 @@ const PostPage: React.FC = () => {
         fetchPostData()
     }, [postId])
 
-    const handleLike = async () => {
-        if (!liked) {
-            setLiked(true)
-            await db
-                .collection('posts')
-                .doc(postId)
-                .update({
-                    likes: postData!.likes + 1, // Increment likes by 1
-                })
+
+    const toggleLikeStatus = async () => {
+        // check postData exists to prevent errors
+        if (postData) {
+            handleLikes(postData)
+            setLiked(!liked)
         }
     }
 
+    // TODO Create a seperate function to load existing comments to the page
     const handleComment = async () => {
         if (commentContent.trim() !== '') {
             // Add a new comment to the existing comments array
@@ -80,8 +79,6 @@ const PostPage: React.FC = () => {
             setCommentContent('')
         }
     }
-
-    console.log(postData?.comments)
 
     if (!postData) {
         return (
@@ -127,14 +124,14 @@ const PostPage: React.FC = () => {
                             size="small"
                             fill="clear"
                             className="likes reactionCircle"
-                            onClick={handleLike}
+                            onClick={toggleLikeStatus}
                         >
                             <div>
                                 <IonIcon
                                     className="icon"
                                     icon={thumbsUpOutline}
                                 ></IonIcon>
-                                <span>{postData.likes}</span>
+                                <span>{postData.likes.length}</span>
                             </div>
                         </IonButton>
 

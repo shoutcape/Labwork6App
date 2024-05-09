@@ -27,7 +27,7 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({
         }
 
         const createDummyPosts = async () => {
-            for (let i = 1; i < 11; i++) {
+            for (let i = 1; i < 4; i++) {
                 // setTimeout to test the currentdate/order of the posts
                 await new Promise((resolve) => setTimeout(resolve, 1000))
                 const currentDate = new Date()
@@ -38,8 +38,9 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({
                     username: username + i,
                     title: title + i,
                     content: content + i,
-                    likes: 0 + i,
-                    comments: 0 + i,
+                    // create dummy arrays for likes and comments
+                    likes: Array.from({length:i}, (_, index) => `user${index+1}`),
+                    comments:  Array.from({length:i}, (_, index) => `comments${index+1}`),
                     createdAt: formattedDate,
                 }
                 newPost.set(newPostData)
