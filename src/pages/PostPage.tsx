@@ -28,7 +28,7 @@ const PostPage: React.FC = () => {
     const { postId } = useParams<{ postId: string }>()
     const [postData, setPostData] = useState<PostData | null>(null)
     const [liked, setLiked] = useState(false)
-    const [commentContent, setCommentContent] = useState("")
+    const [commentContent, setCommentContent] = useState('')
     const [commenting, setCommenting] = useState(false) // State to track commenting mode
 
     useEffect(() => {
@@ -53,19 +53,31 @@ const PostPage: React.FC = () => {
     const handleLike = async () => {
         if (!liked) {
             setLiked(true)
-            await db.collection('posts').doc(postId).update({
-                likes: postData!.likes + 1 // Increment likes by 1
-            })
+            await db
+                .collection('posts')
+                .doc(postId)
+                .update({
+                    likes: postData!.likes + 1, // Increment likes by 1
+                })
         }
     }
 
     const handleComment = async () => {
-        if (commentContent.trim() !== "") {
+        if (commentContent.trim() !== '') {
             // Add a new comment to the existing comments array
-            await db.collection('posts').doc(postId).update({
-                comments: [...postData!.comments, { content: commentContent, createdAt: new Date().toISOString() }]
-            })
-            setCommentContent("")
+            await db
+                .collection('posts')
+                .doc(postId)
+                .update({
+                    comments: [
+                        ...postData!.comments,
+                        {
+                            content: commentContent,
+                            createdAt: new Date().toISOString(),
+                        },
+                    ],
+                })
+            setCommentContent('')
         }
     }
 
@@ -91,7 +103,7 @@ const PostPage: React.FC = () => {
             <IonHeader>
                 <IonToolbar>
                     <IonButtons slot="start">
-                        <IonButton routerLink='/forumpage'>
+                        <IonButton routerLink="/forumpage">
                             <IonIcon icon={arrowBack}></IonIcon>
                         </IonButton>
                     </IonButtons>
@@ -111,7 +123,12 @@ const PostPage: React.FC = () => {
                         <p className="textcontent">{postData.content}</p>
                     </div>
                     <div className="likesAndComments">
-                        <IonButton size='small' fill='clear' className="likes reactionCircle" onClick={handleLike}>
+                        <IonButton
+                            size="small"
+                            fill="clear"
+                            className="likes reactionCircle"
+                            onClick={handleLike}
+                        >
                             <div>
                                 <IonIcon
                                     className="icon"
@@ -121,7 +138,12 @@ const PostPage: React.FC = () => {
                             </div>
                         </IonButton>
 
-                        <IonButton size='small' fill='clear' className="comments reactionCircle" onClick={() => setCommenting(true)}>
+                        <IonButton
+                            size="small"
+                            fill="clear"
+                            className="comments reactionCircle"
+                            onClick={() => setCommenting(true)}
+                        >
                             <div>
                                 <IonIcon
                                     className="icon"
@@ -135,22 +157,38 @@ const PostPage: React.FC = () => {
                 {commenting && (
                     <IonCard>
                         <IonList>
-                            {Array.isArray(postData.comments) && postData.comments.map((comment, index) => (
-                                <IonItem key={index}>
-                                    <IonLabel>{comment.content}</IonLabel>
-                                    {comment.createdAt && new Date(comment.createdAt) instanceof Date && (
-                                        <p style={{ fontSize: '0.8rem', color: '#777' }}>
-                                            {new Date(comment.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                                        </p>
-                                    )}
-                                </IonItem>
-                            ))}
+                            {Array.isArray(postData.comments) &&
+                                postData.comments.map((comment, index) => (
+                                    <IonItem key={index}>
+                                        <IonLabel>{comment.content}</IonLabel>
+                                        {comment.createdAt &&
+                                            new Date(
+                                                comment.createdAt
+                                            ) instanceof Date && (
+                                                <p
+                                                    style={{
+                                                        fontSize: '0.8rem',
+                                                        color: '#777',
+                                                    }}
+                                                >
+                                                    {new Date(
+                                                        comment.createdAt
+                                                    ).toLocaleTimeString([], {
+                                                        hour: '2-digit',
+                                                        minute: '2-digit',
+                                                    })}
+                                                </p>
+                                            )}
+                                    </IonItem>
+                                ))}
                         </IonList>
                         <IonItem>
                             <IonTextarea
                                 placeholder="Write a comment..."
                                 value={commentContent}
-                                onIonChange={(e) => setCommentContent(e.detail.value!)}
+                                onIonChange={(e) =>
+                                    setCommentContent(e.detail.value!)
+                                }
                             ></IonTextarea>
                             <IonButton slot="end" onClick={handleComment}>
                                 <IonIcon icon={sendOutline}></IonIcon>

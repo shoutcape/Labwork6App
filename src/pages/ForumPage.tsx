@@ -41,7 +41,6 @@ const ForumPage: React.FC = () => {
         }
     }, [location])
 
-
     // while loading returns blank page
     if (loading) {
         return <IonPage></IonPage>
