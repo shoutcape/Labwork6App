@@ -1,12 +1,7 @@
-import {
-    IonButton,
-    IonContent,
-    IonInput,
-} from '@ionic/react'
+import { IonButton, IonContent, IonInput } from '@ionic/react'
 import { firebase, db } from '../firebaseConfig'
 import React, { useState } from 'react'
 import { usernameCheck } from '../auth/usernameCheck'
-
 
 // define props for typescript
 interface UsernameModalProps {
@@ -19,10 +14,10 @@ const UsernameModal: React.FC<UsernameModalProps> = ({
     const [username, setUsername] = useState('')
     const user = firebase.auth().currentUser
 
-    const submitUsername = async (event:React.FormEvent) => {
+    const submitUsername = async (event: React.FormEvent) => {
         event.preventDefault()
         if (!username || username.trim().length < 1) {
-            console.log('username invalid:',username)
+            console.log('username invalid:', username)
             return
         }
 
@@ -47,19 +42,19 @@ const UsernameModal: React.FC<UsernameModalProps> = ({
     }
 
     return (
-            <IonContent className='ion-padding'>
-                <form className='usernameForm'
-                    onSubmit={submitUsername}
-                >
-                <h1 className='ion-text-center title'>Create username</h1>
-                    <IonInput
-                        value={username}
-                        // on each change update the username
-                        onIonInput={(e) => setUsername(e.detail.value!)}
-                    />
-                    <IonButton className='usernameSubmit' onClick={submitUsername}>Confirm</IonButton>
-                </form>
-            </IonContent>
+        <IonContent className="ion-padding">
+            <form className="usernameForm" onSubmit={submitUsername}>
+                <h1 className="ion-text-center title">Create username</h1>
+                <IonInput
+                    value={username}
+                    // on each change update the username
+                    onIonInput={(e) => setUsername(e.detail.value!)}
+                />
+                <IonButton className="usernameSubmit" onClick={submitUsername}>
+                    Confirm
+                </IonButton>
+            </form>
+        </IonContent>
     )
 }
 

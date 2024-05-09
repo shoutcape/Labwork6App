@@ -2,16 +2,7 @@ import { IonCard, IonIcon, IonRouterLink } from '@ionic/react'
 import { chatboxEllipsesOutline, thumbsUpOutline } from 'ionicons/icons'
 import React, { useEffect, useState } from 'react'
 import { db } from '../firebaseConfig'
-
-interface PostData {
-    id: any
-    username: string
-    title: string
-    content: string
-    date: string
-    likes: number
-    comments: number
-}
+import { PostData } from '../pages/ForumPage'
 
 // define the value for properties
 interface props {
@@ -39,7 +30,7 @@ const PostList: React.FC<props> = ({ showCreatePostModal }) => {
                             username: postData.username,
                             title: postData.title,
                             content: postData.content,
-                            date: formattedDate,
+                            createdAt: formattedDate,
                             likes: postData.likes,
                             comments: postData.comments,
                         })
@@ -65,7 +56,7 @@ const PostList: React.FC<props> = ({ showCreatePostModal }) => {
                                     User: {post.username}
                                 </p>
                                 <div className="date">
-                                    <p>{post.date}</p>
+                                    <p>{post.createdAt}</p>
                                 </div>
                             </div>
                             <div className="content">
@@ -78,14 +69,14 @@ const PostList: React.FC<props> = ({ showCreatePostModal }) => {
                                         className="icon"
                                         icon={thumbsUpOutline}
                                     ></IonIcon>
-                                    <span>{post.likes}</span>
+                                    <span>{post.likes.length}</span>
                                 </div>
                                 <div className="comments reactionCircle">
                                     <IonIcon
                                         className="icon"
                                         icon={chatboxEllipsesOutline}
                                     ></IonIcon>
-                                    <span>{post.comments}</span>
+                                    <span>{post.comments.length}</span>
                                 </div>
                             </div>
                         </IonCard>

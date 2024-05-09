@@ -2,20 +2,20 @@ import { IonPage, IonContent, IonButton, IonModal } from '@ionic/react'
 import './ForumPage.css'
 import { Redirect, useHistory, useLocation } from 'react-router'
 import { useAuth } from '../auth/useAuth'
-import { firebase, db } from '../firebaseConfig'
+import { firebase } from '../firebaseConfig'
 import { useEffect, useRef, useState } from 'react'
 import CreatePostModal from '../components/CreatePostModal'
 import UsernameModal from '../components/UsernameModal'
 import PostList from '../components/PostList'
 
 export interface PostData {
-    id: any
+    id: string
     username: string
     title: string
     content: string
-    date: string
-    likes: number
-    comments: number
+    createdAt: string
+    likes: string[]
+    comments: string[]
 }
 
 const ForumPage: React.FC = () => {
@@ -23,7 +23,6 @@ const ForumPage: React.FC = () => {
     const { loggedIn, loading } = useAuth()
     const [showCreatePostModal, setShowCreatePostModal] = useState(false)
     const [showUsernameModal, setShowUsernameModal] = useState(false)
-    const [posts, setPosts] = useState<PostData[]>([])
     const history = useHistory()
     const location = useLocation()
     const isMounted = useRef(true)
@@ -41,28 +40,6 @@ const ForumPage: React.FC = () => {
             }
         }
     }, [location])
-
-    useEffect(() => {
-        db.collection('posts')
-            .orderBy('createdAt', 'desc')
-            .get()
-            .then((snapshot) => {
-                const fetchedPosts: PostData[] = []
-                snapshot.forEach((doc) => {
-                    const postData = doc.data()
-                    fetchedPosts.push({
-                        id: doc.id,
-                        username: postData.username,
-                        title: postData.title,
-                        content: postData.content,
-                        date: postData.createdAt,
-                        likes: postData.likes,
-                        comments: postData.comments,
-                    })
-                    setPosts(fetchedPosts)
-                })
-            })
-    }, [])
 
     // while loading returns blank page
     if (loading) {

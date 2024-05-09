@@ -26,22 +26,30 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({
             return
         }
 
-
         const createDummyPosts = async () => {
-        for (let i = 1; i < 11; i++) {
-            // setTimeout to test the currentdate/order of the posts
-            await new Promise((resolve) => setTimeout(resolve, 1000))
+            for (let i = 1; i < 4; i++) {
+                // setTimeout to test the currentdate/order of the posts
+                await new Promise((resolve) => setTimeout(resolve, 1000))
                 const currentDate = new Date()
                 const formattedDate = `${currentDate.toLocaleDateString()} ${currentDate.toLocaleTimeString()}`
+                const newPost = db.collection('posts').doc()
                 const newPostData = {
+                    id: newPost.id,
                     username: username + i,
                     title: title + i,
                     content: content + i,
-                    likes: 0 + i,
-                    comments: 0 + i,
+                    // create dummy arrays for likes and comments
+                    likes: Array.from(
+                        { length: i },
+                        (_, index) => `user${index + 1}`
+                    ),
+                    comments: Array.from({ length: i }, (_, index) => ({
+                        content: `comment${index + 1}`,
+                        createdAt: new Date().toISOString(),
+                    })),
                     createdAt: formattedDate,
                 }
-                db.collection('posts').doc().set(newPostData)
+                newPost.set(newPostData)
                 console.log('new post added to db')
             }
             setShowCreatePostModal(false)
@@ -62,7 +70,6 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({
         // db.collection('posts').doc().set(newPostData)
         // console.log('new post added to db')
         // setShowCreatePostModal(false)
-
     }
 
     return (
