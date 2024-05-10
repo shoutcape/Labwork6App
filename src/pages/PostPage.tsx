@@ -14,7 +14,7 @@ import {
     IonToolbar,
 } from '@ionic/react'
 import React, { useEffect, useState } from 'react'
-import { db } from '../firebaseConfig'
+import { db, firebase } from '../firebaseConfig'
 import { useParams } from 'react-router'
 import { PostData } from './ForumPage'
 import {
@@ -23,7 +23,7 @@ import {
     sendOutline,
     thumbsUpOutline,
 } from 'ionicons/icons'
-import { handleLikes } from '../helpers/likesAndComments'
+import { handleLikes, handleComments } from '../helpers/likesAndComments'
 
 const PostPage: React.FC = () => {
     const { postId } = useParams<{ postId: string }>()
@@ -31,6 +31,7 @@ const PostPage: React.FC = () => {
     const [liked, setLiked] = useState(false)
     const [commentContent, setCommentContent] = useState('')
     const [commenting, setCommenting] = useState(false) // State to track commenting mode
+    const [latestComment, setLatestComment] = useState<any>(null)
 
     useEffect(() => {
         const fetchPostData = async () => {
@@ -60,25 +61,25 @@ const PostPage: React.FC = () => {
         }
     }
 
-    // TODO Create a seperate function to load existing comments to the page
-    const handleComment = async () => {
+
+    //Need to add index to firestore to work properly
+    const toggleCommentStatus = async () => {
         if (commentContent.trim() !== '') {
-            // Add a new comment to the existing comments array
-            await db
-                .collection('posts')
-                .doc(postId)
-                .update({
-                    comments: [
-                        ...postData!.comments,
-                        {
-                            content: commentContent,
-                            createdAt: new Date().toISOString(),
-                        },
-                    ],
-                })
-            setCommentContent('')
+            if (postData) {
+                const userId = firebase.auth().currentUser?.uid || '';
+                const newComment = {
+                    content: commentContent,
+                    createdAt: new Date().toISOString(),
+                    userId,
+                };
+                const addedComment = await handleComments(postId, newComment); 
+                setLatestComment(addedComment);
+                setCommentContent('');
+            }
         }
-    }
+    };
+    
+    
 
     if (!postData) {
         return (
@@ -189,7 +190,7 @@ const PostPage: React.FC = () => {
                                     setCommentContent(e.detail.value!)
                                 }
                             ></IonTextarea>
-                            <IonButton slot="end" onClick={handleComment} style={{marginBottom: '15px'}}>
+                            <IonButton slot="end" onClick={toggleCommentStatus} style={{marginBottom: '15px'}}>
                                 <IonIcon icon={sendOutline}></IonIcon>
                             </IonButton>
                         </IonItem>

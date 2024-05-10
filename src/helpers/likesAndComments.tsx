@@ -26,6 +26,19 @@ export const handleLikes = async (postData: PostData) => {
 }
 
 
-export const handleComments = async () => {
-    // TODO: MARK: create a function to handle addition of new comments to database
-}
+export const handleComments = async (postId: string, newComment: any) => {
+    const userId = firebase.auth().currentUser?.uid!;
+    // Save the comment to the database
+    await db.collection('comments').add({
+        postId: postId, 
+        ...newComment,
+    });
+    // Get the latest comment
+    const commentsRef = await db.collection('comments').where('postId', '==', postId).orderBy('createdAt', 'desc').limit(1).get();
+    let addedComment = null;
+    if (!commentsRef.empty) {
+        addedComment = commentsRef.docs[0].data();
+    }
+
+    return addedComment;
+};
