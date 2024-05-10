@@ -5,34 +5,31 @@ import {
     IonContent,
     IonHeader,
     IonIcon,
-    IonItem,
-    IonLabel,
-    IonList,
+    IonModal,
     IonPage,
-    IonTextarea,
     IonTitle,
     IonToolbar,
 } from '@ionic/react'
 import React, { useEffect, useState } from 'react'
-import { db, firebase } from '../firebaseConfig'
+import { db } from '../firebaseConfig'
 import { useParams } from 'react-router'
 import { PostData } from './ForumPage'
 import {
     arrowBack,
     chatboxEllipsesOutline,
-    sendOutline,
     thumbsUpOutline,
 } from 'ionicons/icons'
-import { handleLikes, handleComments } from '../helpers/likesAndComments'
+import { handleLikes } from '../helpers/likesAndComments'
 import { Comment } from './ForumPage'
+import CreateCommentModal from '../components/CreateCommentModal'
 
 const PostPage: React.FC = () => {
     const { postId } = useParams<{ postId: string }>()
     const [postData, setPostData] = useState<PostData | null>(null)
     const [liked, setLiked] = useState(false)
-    const [commentContent, setCommentContent] = useState('')
     const [commenting, setCommenting] = useState(false) // State to track commenting mode
-    const [latestComment, setLatestComment] = useState<any>(null)
+    const [replyTarget, setReplyTarget] = useState('')
+    const [comments, setComments] = useState<Comment[] | null>(null)
 
     useEffect(() => {
         const fetchPostData = async () => {
@@ -53,29 +50,53 @@ const PostPage: React.FC = () => {
         fetchPostData()
     }, [postId])
 
-    const toggleLikeStatus = async () => {
-        // check postData exists to prevent errors
-        if (postData) {
-            handleLikes(postData)
-            setLiked(!liked)
+    const fetchComments = () => {
+        // check if for modal so the new comments are only fetched when closing the post creation modal
+        db.collection('comments')
+            .where('postId', '==', postId)
+            .orderBy('createdAt')
+            .onSnapshot((snapshot) => {
+                const fetchedComments: Comment[] = []
+                snapshot.forEach((doc) => {
+                    const commentData = doc.data()
+                    const date = commentData.createdAt
+                    // remove seconds from timestamp to only show HH:MM
+                    const formattedDate = date.slice(0, -3)
+                    fetchedComments.push({
+                        id: doc.id,
+                        username: commentData.username,
+                        content: commentData.content,
+                        createdAt: formattedDate,
+                        likes: commentData.likes,
+                        comments: commentData.comments,
+                        replyTo: commentData.replyTo,
+                    })
+                })
+                setComments(fetchedComments)
+            })
+        console.log('newPosts Fetched...')
+    }
+    // each time the createPostModal state changes fetch the comments from the database
+
+    useEffect(() => {
+        if (!commenting) {
+            fetchComments()
         }
+    }, [commenting])
+
+    const toggleLikeStatus = async (
+        collection: string,
+        targetId: string,
+        likesArray: string[]
+    ) => {
+        handleLikes(collection, targetId, likesArray)
+        setLiked(!liked)
     }
 
-    //Need to add index to firestore to work properly
-    const toggleCommentStatus = async () => {
-        if (commentContent.trim() !== '') {
-            if (postData) {
-                const userId = firebase.auth().currentUser?.uid || ''
-                const newComment = {
-                    content: commentContent,
-                    createdAt: new Date().toISOString(),
-                    userId,
-                }
-                const addedComment = await handleComments(postId, newComment)
-                setLatestComment(addedComment)
-                setCommentContent('')
-            }
-        }
+    const createComment = (replyTarget: string) => {
+        setCommenting(true)
+        setReplyTarget(replyTarget)
+        console.log('comment created lol')
     }
 
     if (!postData) {
@@ -110,7 +131,7 @@ const PostPage: React.FC = () => {
                     <div className="details">
                         <p className="username">User: {postData.username}</p>
                         <div className="date">
-                            <p>{postData.createdAt}</p>
+                            <p>{postData.createdAt.slice(0, -3)}</p>
                         </div>
                     </div>
                     <div className="content">
@@ -122,7 +143,13 @@ const PostPage: React.FC = () => {
                             size="small"
                             fill="clear"
                             className="likes reactionCircle"
-                            onClick={toggleLikeStatus}
+                            onClick={() => {
+                                toggleLikeStatus(
+                                    'posts',
+                                    postData.id,
+                                    postData.likes
+                                )
+                            }}
                         >
                             <div>
                                 <IonIcon
@@ -137,7 +164,9 @@ const PostPage: React.FC = () => {
                             size="small"
                             fill="clear"
                             className="comments reactionCircle"
-                            onClick={() => setCommenting(true)}
+                            onClick={() => {
+                                createComment(postData.username)
+                            }}
                         >
                             <div>
                                 <IonIcon
@@ -150,56 +179,87 @@ const PostPage: React.FC = () => {
                     </div>
                 </IonCard>
 
-                {/* comments */}
-                {/*MARK: TODO: Create a Modal or popup style window to create comments in */}
-
-                {postData.comments &&
-                    postData.comments.map((comment: Comment) => (
-                        <IonCard className="userPost userComment">
-                            <div className="details">
-                                <p className="username">
-                                    User: {comment.username}
-                                </p>
-                                <div className="date">
-                                    <p>{comment.createdAt}</p>
+                {/* MARK: comments rendered here*/}
+                {/* TODO: Figure out a way to keep count of comments, the same way likes are counted */}
+                <div className="commentsContainer">
+                    {comments &&
+                        comments.map((comment: Comment) => (
+                            <IonCard
+                                key={comment.id}
+                                className="userPost userComment"
+                            >
+                                <div className="details">
+                                    <p className="username">
+                                        User: {comment.username}
+                                    </p>
+                                    <p className="username">
+                                        Replied to user: {comment.replyTo}
+                                    </p>
+                                    <div className="date">
+                                        <p>{comment.createdAt}</p>
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="content">
-                                <p className="textcontent">{comment.content}</p>
-                            </div>
-                            <div className="likesAndComments">
-                                <IonButton
-                                    size="small"
-                                    fill="clear"
-                                    className="likes reactionCircle"
-                                    onClick={toggleLikeStatus}
-                                >
-                                    <div>
-                                        <IonIcon
-                                            className="icon"
-                                            icon={thumbsUpOutline}
-                                        ></IonIcon>
-                                        <span>{postData.likes.length}</span>
-                                    </div>
-                                </IonButton>
+                                <div className="content">
+                                    <p className="textcontent">
+                                        {comment.content}
+                                    </p>
+                                </div>
+                                <div className="likesAndComments">
+                                    <IonButton
+                                        size="small"
+                                        fill="clear"
+                                        className="likes reactionCircle"
+                                        onClick={() => {
+                                            toggleLikeStatus(
+                                                'comments',
+                                                comment.id,
+                                                comment.likes
+                                            )
+                                        }}
+                                    >
+                                        <div>
+                                            <IonIcon
+                                                className="icon"
+                                                icon={thumbsUpOutline}
+                                            ></IonIcon>
+                                            <span>{comment.likes.length}</span>
+                                        </div>
+                                    </IonButton>
 
-                                <IonButton
-                                    size="small"
-                                    fill="clear"
-                                    className="comments reactionCircle"
-                                    onClick={() => setCommenting(true)}
-                                >
-                                    <div>
-                                        <IonIcon
-                                            className="icon"
-                                            icon={chatboxEllipsesOutline}
-                                        ></IonIcon>
-                                        <span>{postData.comments.length}</span>
-                                    </div>
-                                </IonButton>
-                            </div>
-                        </IonCard>
-                    ))}
+                                    <IonButton
+                                        size="small"
+                                        fill="clear"
+                                        className="comments reactionCircle"
+                                        onClick={() => {
+                                            createComment(comment.username)
+                                        }}
+                                    >
+                                        <div>
+                                            <IonIcon
+                                                className="icon"
+                                                icon={chatboxEllipsesOutline}
+                                            ></IonIcon>
+                                            <span>
+                                                {comment.comments.length}
+                                            </span>
+                                        </div>
+                                    </IonButton>
+                                </div>
+                            </IonCard>
+                        ))}
+                </div>
+
+                {/* MARK: Modal for comment creation */}
+                <IonModal
+                    onDidDismiss={() => setCommenting(false)}
+                    isOpen={commenting}
+                >
+                    <CreateCommentModal
+                        setCommenting={setCommenting}
+                        postId={postId}
+                        replyTarget={replyTarget}
+                    />
+                </IonModal>
             </IonContent>
         </IonPage>
     )

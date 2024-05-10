@@ -43,14 +43,7 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({
                         { length: i },
                         (_, index) => `user${index + 1}`
                     ),
-                    comments: Array.from({ length: i }, (_, index) => ({
-                        id: newPost.collection('comments').doc().id,
-                        username: username+i+i,
-                        content: `comment${index + 1}`,
-                        createdAt: formattedDate,
-                        likes: ['oneliker', 'twoliker'],
-                        comments: []
-                    })),
+                    comments: [],
                     createdAt: formattedDate,
                 }
                 newPost.set(newPostData)

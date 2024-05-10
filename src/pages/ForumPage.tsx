@@ -15,6 +15,7 @@ export interface Comment {
     content: string
     likes: string[]
     comments: Comment[]
+    replyTo: string
 }
 
 export interface PostData {
