@@ -80,18 +80,25 @@
 }
 
 .userPost {
-    margin: 0px;
     padding: 0px 10px 10px 10px;
     min-height: 200px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    margin: auto;
+}
+
+.userComment {
+    margin: auto;
+    margin-top: 15px;
+
 }
 
 .likesAndComments {
     display: flex;
     margin-top: auto;
     gap: 7px;
+    justify-content: end;
     ion-button {
         margin: 0px;
     }
@@ -125,6 +132,7 @@
         margin-top: -10px;
     }
 }
+
 
 /* media queries for smaller displays */
 @media (max-width: 768px) {

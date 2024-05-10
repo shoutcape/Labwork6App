@@ -8,14 +8,23 @@ import CreatePostModal from '../components/CreatePostModal'
 import UsernameModal from '../components/UsernameModal'
 import PostList from '../components/PostList'
 
+export interface Comment {
+    id: string
+    username: string
+    createdAt: string
+    content: string
+    likes: string[]
+    comments: Comment[]
+}
+
 export interface PostData {
     id: string
     username: string
+    createdAt: string
     title: string
     content: string
-    createdAt: string
     likes: string[]
-    comments: string[]
+    comments: Comment[]
 }
 
 const ForumPage: React.FC = () => {

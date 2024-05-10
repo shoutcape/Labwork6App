@@ -24,6 +24,7 @@ import {
     thumbsUpOutline,
 } from 'ionicons/icons'
 import { handleLikes, handleComments } from '../helpers/likesAndComments'
+import { Comment } from './ForumPage'
 
 const PostPage: React.FC = () => {
     const { postId } = useParams<{ postId: string }>()
@@ -52,7 +53,6 @@ const PostPage: React.FC = () => {
         fetchPostData()
     }, [postId])
 
-
     const toggleLikeStatus = async () => {
         // check postData exists to prevent errors
         if (postData) {
@@ -61,25 +61,22 @@ const PostPage: React.FC = () => {
         }
     }
 
-
     //Need to add index to firestore to work properly
     const toggleCommentStatus = async () => {
         if (commentContent.trim() !== '') {
             if (postData) {
-                const userId = firebase.auth().currentUser?.uid || '';
+                const userId = firebase.auth().currentUser?.uid || ''
                 const newComment = {
                     content: commentContent,
                     createdAt: new Date().toISOString(),
                     userId,
-                };
-                const addedComment = await handleComments(postId, newComment); 
-                setLatestComment(addedComment);
-                setCommentContent('');
+                }
+                const addedComment = await handleComments(postId, newComment)
+                setLatestComment(addedComment)
+                setCommentContent('')
             }
         }
-    };
-    
-    
+    }
 
     if (!postData) {
         return (
@@ -109,7 +106,7 @@ const PostPage: React.FC = () => {
                 </IonToolbar>
             </IonHeader>
             <IonContent className="ion-padding">
-                <IonCard className="userPost"  style={{ margin: '9px' }}>
+                <IonCard className="userPost">
                     <div className="details">
                         <p className="username">User: {postData.username}</p>
                         <div className="date">
@@ -152,53 +149,59 @@ const PostPage: React.FC = () => {
                         </IonButton>
                     </div>
                 </IonCard>
-                {commenting && (
-                    <>
-                            {Array.isArray(postData.comments) &&
-                                postData.comments.map((comment, index) => (
-                                    <IonCard key={index}>
-                                    <IonItem>
-                                        <IonLabel>{comment.content}</IonLabel>
-                                        {comment.createdAt &&
-                                            new Date(
-                                                comment.createdAt
-                                            ) instanceof Date && (
-                                                <p
-                                                    style={{
-                                                        fontSize: '0.8rem',
-                                                        color: '#777',
-                                                    }}
-                                                >
-                                                    {new Date(
-                                                        comment.createdAt
-                                                    ).toLocaleTimeString([], {
-                                                        hour: '2-digit',
-                                                        minute: '2-digit',
-                                                    })}
-                                                </p>
-                                            
-                                            )}
-                                    </IonItem>
-                                    </IonCard>
-                                ))}
-                        <IonCard className='ion-padding'>
-                        <IonItem>
-                            <IonTextarea
-                                placeholder="Write a comment..."
-                                value={commentContent}
-                                onIonChange={(e) =>
-                                    setCommentContent(e.detail.value!)
-                                }
-                            ></IonTextarea>
-                            <IonButton slot="end" onClick={toggleCommentStatus} style={{marginBottom: '15px'}}>
-                                <IonIcon icon={sendOutline}></IonIcon>
-                            </IonButton>
-                        </IonItem>
-                    </IonCard>
-                    </>
-                )}
-        </IonContent>
-    </IonPage>
+
+                {/* comments */}
+                {/*MARK: TODO: Create a Modal or popup style window to create comments in */}
+
+                {postData.comments &&
+                    postData.comments.map((comment: Comment) => (
+                        <IonCard className="userPost userComment">
+                            <div className="details">
+                                <p className="username">
+                                    User: {comment.username}
+                                </p>
+                                <div className="date">
+                                    <p>{comment.createdAt}</p>
+                                </div>
+                            </div>
+                            <div className="content">
+                                <p className="textcontent">{comment.content}</p>
+                            </div>
+                            <div className="likesAndComments">
+                                <IonButton
+                                    size="small"
+                                    fill="clear"
+                                    className="likes reactionCircle"
+                                    onClick={toggleLikeStatus}
+                                >
+                                    <div>
+                                        <IonIcon
+                                            className="icon"
+                                            icon={thumbsUpOutline}
+                                        ></IonIcon>
+                                        <span>{postData.likes.length}</span>
+                                    </div>
+                                </IonButton>
+
+                                <IonButton
+                                    size="small"
+                                    fill="clear"
+                                    className="comments reactionCircle"
+                                    onClick={() => setCommenting(true)}
+                                >
+                                    <div>
+                                        <IonIcon
+                                            className="icon"
+                                            icon={chatboxEllipsesOutline}
+                                        ></IonIcon>
+                                        <span>{postData.comments.length}</span>
+                                    </div>
+                                </IonButton>
+                            </div>
+                        </IonCard>
+                    ))}
+            </IonContent>
+        </IonPage>
     )
 }
 
