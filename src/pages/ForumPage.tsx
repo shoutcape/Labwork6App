@@ -16,6 +16,7 @@ export interface Comment {
     likes: string[]
     comments: Comment[]
     replyTo: string
+    parentId: string
 }
 
 export interface PostData {

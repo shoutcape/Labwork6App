@@ -12,12 +12,14 @@ interface createCommentModalprops {
     setCommenting: (show: boolean) => void
     postId: string
     replyTarget: string
+    parentId: string
 }
 
 const CreateCommentModal: React.FC<createCommentModalprops> = ({
     setCommenting,
     postId,
-    replyTarget
+    replyTarget,
+    parentId
 }) => {
     const [content, setContent] = useState('')
 
@@ -37,7 +39,8 @@ const CreateCommentModal: React.FC<createCommentModalprops> = ({
             comments: [],
             createdAt: formattedDate,
             postId: postId,
-            replyTo: replyTarget
+            replyTo: replyTarget,
+            parentId: parentId
         }
         // select database collection, create new document, set new document contents
         db.collection('comments').doc().set(newCommentData)
