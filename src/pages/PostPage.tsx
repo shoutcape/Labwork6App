@@ -10,6 +10,7 @@ import {
     IonTitle,
     IonToolbar,
 } from '@ionic/react'
+import './PostPage.css'
 import React, { useEffect, useState } from 'react'
 import { db } from '../firebaseConfig'
 import { useParams } from 'react-router'
@@ -122,7 +123,7 @@ const PostPage: React.FC = () => {
     return (
         <IonPage>
             <IonHeader>
-                <IonToolbar>
+                <IonToolbar color='primary'>
                     <IonButtons slot="start">
                         <IonButton routerLink="/forumpage">
                             <IonIcon icon={arrowBack}></IonIcon>
