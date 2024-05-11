@@ -31,6 +31,7 @@ const PostPage: React.FC = () => {
     const [replyTarget, setReplyTarget] = useState('')
     const [comments, setComments] = useState<Comment[] | null>(null)
     const [parentId, setParentId] = useState('')
+    const [commentsCount, setCommentsCount] = useState<number>(0); // State to track comments count
 
     useEffect(() => {
         const fetchPostData = async () => {
@@ -52,7 +53,6 @@ const PostPage: React.FC = () => {
     }, [postId])
 
     const fetchComments = () => {
-        // check if for modal so the new comments are only fetched when closing the post creation modal
         db.collection('comments')
             .where('postId', '==', postId)
             .orderBy('createdAt')
@@ -61,7 +61,6 @@ const PostPage: React.FC = () => {
                 snapshot.forEach((doc) => {
                     const commentData = doc.data()
                     const date = commentData.createdAt
-                    // remove seconds from timestamp to only show HH:MM
                     const formattedDate = date.slice(0, -3)
                     fetchedComments.push({
                         id: doc.id,
@@ -72,13 +71,13 @@ const PostPage: React.FC = () => {
                         comments: commentData.comments,
                         replyTo: commentData.replyTo,
                         parentId: commentData.parentId,
+                        commentsCount: commentData.commentsCount || 0, // Set default value if commentsCount doesn't exist
                     })
                 })
                 setComments(fetchedComments)
+                setCommentsCount(fetchedComments.length) // Set comments count
             })
-        console.log('newPosts Fetched...')
     }
-    // each time the createPostModal state changes fetch the comments from the database
 
     useEffect(() => {
         if (!commenting) {
@@ -102,86 +101,80 @@ const PostPage: React.FC = () => {
         console.log('comment created lol')
     }
 
-
     const renderComments = (comments: Comment[], parentId: string | null = null) => {
         return comments
             .filter((comment: Comment) => comment.parentId === parentId)
             .map((comment: Comment) => (
                 <IonCard
-                                key={comment.id}
-                                className="userPost userComment"
-                            >
-                                <div className="details">
-                                    <p className="username">
-                                        User: {comment.username}
-                                    </p>
-                                    <p className="username">
-                                        Replied to user: {comment.replyTo}
-                                    </p>
-                                    <div className="date">
-                                        <p>{comment.createdAt}</p>
-                                    </div>
-                                </div>
-                                <div className="content">
-                                    <p className="textcontent">
-                                        {comment.content}
-                                    </p>
-                                </div>
-                                <div className="likesAndComments">
-                                    <IonButton
-                                        size="small"
-                                        fill="clear"
-                                        className="likes reactionCircle"
-                                        onClick={() => {
-                                            toggleLikeStatus(
-                                                'comments',
-                                                comment.id,
-                                                comment.likes
-                                            )
-                                        }}
-                                    >
-                                        <div>
-                                            <IonIcon
-                                                className="icon"
-                                                icon={thumbsUpOutline}
-                                            ></IonIcon>
-                                            <span>{comment.likes.length}</span>
-                                        </div>
-                                    </IonButton>
-
-                                    <IonButton
-                                        size="small"
-                                        fill="clear"
-                                        className="comments reactionCircle"
-                                        onClick={() => {
-                                            createComment(
-                                                comment.username,
-                                                comment.id
-                                            )
-                                        }}
-                                    >
-                                        <div>
-                                            <IonIcon
-                                                className="icon"
-                                                icon={chatboxEllipsesOutline}
-                                            ></IonIcon>
-                                            <span>
-                                                {comment.comments.length}
-                                            </span>
-                                        </div>
-                                    </IonButton>
-                                </div>
-                                <div className='nestedComments'>
-                                    {renderComments(comments, comment.id)}
-                                </div>
-                            </IonCard>
+                    key={comment.id}
+                    className="userPost userComment"
+                >
+                    <div className="details">
+                        <p className="username">
+                            User: {comment.username}
+                        </p>
+                        <p className="username">
+                            Replied to user: {comment.replyTo}
+                        </p>
+                        <div className="date">
+                            <p>{comment.createdAt}</p>
+                        </div>
+                    </div>
+                    <div className="content">
+                        <p className="textcontent">
+                            {comment.content}
+                        </p>
+                    </div>
+                    <div className="likesAndComments">
+                        <IonButton
+                            size="small"
+                            fill="clear"
+                            className="likes reactionCircle"
+                            onClick={() => {
+                                toggleLikeStatus(
+                                    'comments',
+                                    comment.id,
+                                    comment.likes
+                                )
+                            }}
+                        >
+                            <div>
+                                <IonIcon
+                                    className="icon"
+                                    icon={thumbsUpOutline}
+                                ></IonIcon>
+                                <span>{comment.likes.length}</span>
+                            </div>
+                        </IonButton>
+    
+                        <IonButton
+                            size="small"
+                            fill="clear"
+                            className="comments reactionCircle"
+                            onClick={() => {
+                                createComment(
+                                    comment.username,
+                                    comment.id
+                                )
+                            }}
+                        >
+                            <div>
+                                <IonIcon
+                                    className="icon"
+                                    icon={chatboxEllipsesOutline}
+                                ></IonIcon>
+                                <span>
+                                    {comment.commentsCount}
+                                </span>
+                            </div>
+                        </IonButton>
+                    </div>
+                    <div className='nestedComments'>
+                        {renderComments(comments, comment.id)}
+                    </div>
+                </IonCard>
             ))
     }
-
-    // In your component's render method:
-
-
-
 
     if (!postData) {
         return (
@@ -257,19 +250,16 @@ const PostPage: React.FC = () => {
                                     className="icon"
                                     icon={chatboxEllipsesOutline}
                                 ></IonIcon>
-                                <span>{postData.comments.length}</span>
+                                <span>{commentsCount}</span>
                             </div>
                         </IonButton>
                     </div>
                 </IonCard>
 
-                {/* MARK: comments rendered here*/}
-                {/* TODO: Figure out a way to keep count of comments, the same way likes are counted */}
                 <div className="commentsContainer">
                     {comments && renderComments(comments, postId)}
                 </div>
 
-                {/* MARK: Modal for comment creation */}
                 <IonModal
                     onDidDismiss={() => setCommenting(false)}
                     isOpen={commenting}
@@ -279,6 +269,7 @@ const PostPage: React.FC = () => {
                         postId={postId}
                         replyTarget={replyTarget}
                         parentId={parentId}
+                        commentsCount={commentsCount}
                     />
                 </IonModal>
             </IonContent>
