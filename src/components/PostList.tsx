@@ -4,53 +4,47 @@ import React, { useEffect, useState } from 'react'
 import { db } from '../firebaseConfig'
 import { PostData } from '../pages/ForumPage'
 
-// define the value for properties
-interface props {
+interface Props {
     showCreatePostModal: boolean
+    setCommentsCount: React.Dispatch<React.SetStateAction<number>>
 }
 
-const PostList: React.FC<props> = ({ showCreatePostModal }) => {
+const PostList: React.FC<Props> = ({ showCreatePostModal, setCommentsCount }) => {
     const [posts, setPosts] = useState<PostData[]>([])
 
-    const fetchPosts = () => {
-        // check if for modal so the new posts are only fetched when closing the post creation modal
-            db.collection('posts')
-                .orderBy('createdAt', 'desc')
-                .get()
-                .then((snapshot) => {
-                    const fetchedPosts: PostData[] = []
-                    snapshot.forEach((doc) => {
-                        const postData = doc.data()
-                        const date = postData.createdAt
-                        // remove seconds from timestamp to only show HH:MM
-                        const formattedDate = date.slice(0, -3)
-                        fetchedPosts.push({
-                            id: doc.id,
-                            username: postData.username,
-                            title: postData.title,
-                            content: postData.content,
-                            createdAt: formattedDate,
-                            likes: postData.likes,
-                            comments: postData.comments,
-                        })
-                    })
-                    setPosts(fetchedPosts)
-                })
-            console.log('newPosts Fetched...')
+    const fetchPosts = async () => {
+        const fetchedPosts: PostData[] = []
+        const postSnapshot = await db.collection('posts').orderBy('createdAt', 'desc').get()
+        for (const doc of postSnapshot.docs) {
+            const postData = doc.data()
+            const date = postData.createdAt
+            const formattedDate = date.slice(0, -3)
+            const commentsSnapshot = await db.collection('comments').where('postId', '==', doc.id).get()
+            fetchedPosts.push({
+                id: doc.id,
+                username: postData.username,
+                title: postData.title,
+                content: postData.content,
+                createdAt: formattedDate,
+                likes: postData.likes,
+                comments: postData.comments,
+                commentsCount: commentsSnapshot.size,
+            })
         }
-        // each time the createPostModal state changes fetch the posts from the database
+        setPosts(fetchedPosts)
+    }
 
-        useIonViewWillEnter(() => {
-            if (!showCreatePostModal) {
+    useIonViewWillEnter(() => {
+        if (!showCreatePostModal) {
             fetchPosts()
-            }
-        })
+        }
+    })
 
-        useEffect(() => {
-            if (!showCreatePostModal) {
-                fetchPosts()
-            }
-        }, [showCreatePostModal])
+    useEffect(() => {
+        if (!showCreatePostModal) {
+            fetchPosts()
+        }
+    }, [showCreatePostModal])
 
     return (
         <div className="postsContainer">
@@ -86,7 +80,7 @@ const PostList: React.FC<props> = ({ showCreatePostModal }) => {
                                         className="icon"
                                         icon={chatboxEllipsesOutline}
                                     ></IonIcon>
-                                    <span>{post.comments.length}</span>
+                                    <span>{post.commentsCount}</span>
                                 </div>
                             </div>
                         </IonCard>
