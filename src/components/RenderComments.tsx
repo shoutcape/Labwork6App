@@ -1,18 +1,7 @@
 import React from 'react'
 import { IonButton, IonCard, IonIcon } from '@ionic/react'
 import { thumbsUpOutline, chatboxEllipsesOutline } from 'ionicons/icons'
-
-
-interface Comment {
-    id: string
-    username: string
-    content: string
-    createdAt: string
-    likes: string[]
-    comments: string[]
-    replyTo: string
-    parentId: string
-}
+import { Comment } from '../pages/ForumPage'
 
 interface RenderCommentsProps {
     comments: Comment[]
