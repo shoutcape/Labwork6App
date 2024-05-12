@@ -8,10 +8,12 @@ This is a forum application built with React and Ionic. It uses Firebase for aut
 - Like and comment on posts
 - Reply to comments
 - Create new posts and comments
+- Comment threads
 
 ## 
 
-## NetLify Release
+## Netlify Release
+https://frogforum.netlify.app/
 
 
 
