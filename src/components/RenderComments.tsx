@@ -2,15 +2,18 @@ import React from 'react'
 import { IonButton, IonCard, IonIcon } from '@ionic/react'
 import { thumbsUpOutline, chatboxEllipsesOutline } from 'ionicons/icons'
 import { Comment } from '../pages/ForumPage'
+import {firebase} from '../firebaseConfig'
 
 interface RenderCommentsProps {
     comments: Comment[]
     parentId: string | null
     toggleLikeStatus: (collection: string, targetId: string, likesArray: string[]) => void
     createComment: (replyTarget: string, parentId: string) => void
+    userId: string
 }
 
-const RenderComments: React.FC<RenderCommentsProps> = ({ comments, parentId, toggleLikeStatus, createComment }) => {
+
+const RenderComments: React.FC<RenderCommentsProps> = ({ comments, parentId, toggleLikeStatus, createComment, userId }) => {
     return (
         <>
             {comments
@@ -34,7 +37,7 @@ const RenderComments: React.FC<RenderCommentsProps> = ({ comments, parentId, tog
                                 <IonButton
                                     size="small"
                                     fill="clear"
-                                    className="likes reactionCircle"
+                                    className={`likes reactionCircle ${comment.likes.includes(userId)? 'active' : ''}`}
                                     onClick={() => {
                                         toggleLikeStatus('comments', comment.id, comment.likes)
                                     }}
@@ -59,7 +62,7 @@ const RenderComments: React.FC<RenderCommentsProps> = ({ comments, parentId, tog
                                     </div>
                                 </IonButton>
                             </div>
-                            <div className="nestedComments">{<RenderComments comments={comments} parentId={comment.id} toggleLikeStatus={toggleLikeStatus} createComment={createComment} />}</div>
+                            <div className="nestedComments">{<RenderComments comments={comments} parentId={comment.id} toggleLikeStatus={toggleLikeStatus} createComment={createComment} userId={userId}/>}</div>
                         </IonCard>
                     )
                 })}

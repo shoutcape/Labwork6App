@@ -12,7 +12,7 @@ import {
 } from '@ionic/react'
 import './PostPage.css'
 import React, { useEffect, useState } from 'react'
-import { db } from '../firebaseConfig'
+import { db, firebase } from '../firebaseConfig'
 import { useParams } from 'react-router'
 import { PostData } from './ForumPage'
 import {
@@ -34,6 +34,7 @@ const PostPage: React.FC = () => {
     const [comments, setComments] = useState<Comment[] | null>(null)
     const [parentId, setParentId] = useState('')
     const [commentsCount, setCommentsCount] = useState<number>(0);
+    const userId = firebase.auth().currentUser?.uid!
 
     useEffect(() => {
         const fetchPostData = async () => {
@@ -148,7 +149,7 @@ const PostPage: React.FC = () => {
                         <IonButton
                             size="small"
                             fill="clear"
-                            className="likes reactionCircle"
+                            className={`${postData.likes.includes(userId)? 'active likes' : 'likes reactionCircle'}`}
                             onClick={() => {
                                 toggleLikeStatus(
                                     'posts',
@@ -186,7 +187,7 @@ const PostPage: React.FC = () => {
                 </IonCard>
 
                 <div className="commentsContainer">
-                    {comments && <RenderComments comments={comments} parentId={postId} toggleLikeStatus={toggleLikeStatus} createComment={createComment} />}
+                    {comments && <RenderComments comments={comments} parentId={postId} toggleLikeStatus={toggleLikeStatus} createComment={createComment} userId={userId}/>}
                 </div>
 
                 <IonModal

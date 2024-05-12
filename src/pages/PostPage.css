@@ -34,6 +34,18 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+
+.active {
+    border-radius: 20px;
+    border: solid 1px black;
+    display: flex;
+    background-color: rgba(56, 129, 255, 0.719);
+    gap: 2px;
+    padding: 3px 7px 3px 7px;
+    margin: 50px;
+    padding: 100px;
+}
+
 /* User Comment */
 .userComment {
     margin: auto;
