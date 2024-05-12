@@ -1,7 +1,21 @@
-# Labwork 6 application
-Labwork-6: Demo Mobile App with Ionic Framework and Firebase Authentication
+# Forum App
 
-This repository contains the code for a simple mobile application developed using Ionic Framework and Firebase Authentication. This project was completed as part of a school assignment for Labwork-6.
+This is a forum application built with React and Ionic. It uses Firebase for authentication and data storage.
+
+## Features
+
+- View posts on the forum
+- Like and comment on posts
+- Reply to comments
+- Create new posts and comments
+
+## 
+
+## NetLify Release
+
+
+
+
 
 ## Team Members
     Ville Kautiainen @shoutcape

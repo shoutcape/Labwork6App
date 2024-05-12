@@ -10,8 +10,9 @@ import {
     IonTitle,
     IonToolbar,
 } from '@ionic/react'
+import './PostPage.css'
 import React, { useEffect, useState } from 'react'
-import { db } from '../firebaseConfig'
+import { db, firebase } from '../firebaseConfig'
 import { useParams } from 'react-router'
 import { PostData } from './ForumPage'
 import {
@@ -22,15 +23,18 @@ import {
 import { handleLikes } from '../helpers/likesAndComments'
 import { Comment } from './ForumPage'
 import CreateCommentModal from '../components/CreateCommentModal'
+import RenderComments from '../components/RenderComments';
 
 const PostPage: React.FC = () => {
     const { postId } = useParams<{ postId: string }>()
     const [postData, setPostData] = useState<PostData | null>(null)
     const [liked, setLiked] = useState(false)
-    const [commenting, setCommenting] = useState(false) // State to track commenting mode
+    const [commenting, setCommenting] = useState(false)
     const [replyTarget, setReplyTarget] = useState('')
     const [comments, setComments] = useState<Comment[] | null>(null)
     const [parentId, setParentId] = useState('')
+    const [commentsCount, setCommentsCount] = useState<number>(0);
+    const userId = firebase.auth().currentUser?.uid!
 
     useEffect(() => {
         const fetchPostData = async () => {
@@ -52,16 +56,16 @@ const PostPage: React.FC = () => {
     }, [postId])
 
     const fetchComments = () => {
-        // check if for modal so the new comments are only fetched when closing the post creation modal
         db.collection('comments')
             .where('postId', '==', postId)
             .orderBy('createdAt')
             .onSnapshot((snapshot) => {
                 const fetchedComments: Comment[] = []
+                let count = 0;
+
                 snapshot.forEach((doc) => {
                     const commentData = doc.data()
                     const date = commentData.createdAt
-                    // remove seconds from timestamp to only show HH:MM
                     const formattedDate = date.slice(0, -3)
                     fetchedComments.push({
                         id: doc.id,
@@ -73,12 +77,12 @@ const PostPage: React.FC = () => {
                         replyTo: commentData.replyTo,
                         parentId: commentData.parentId,
                     })
+                    count++;
                 })
                 setComments(fetchedComments)
+                setCommentsCount(count);
             })
-        console.log('newPosts Fetched...')
     }
-    // each time the createPostModal state changes fetch the comments from the database
 
     useEffect(() => {
         if (!commenting) {
@@ -102,87 +106,6 @@ const PostPage: React.FC = () => {
         console.log('comment created lol')
     }
 
-
-    const renderComments = (comments: Comment[], parentId: string | null = null) => {
-        return comments
-            .filter((comment: Comment) => comment.parentId === parentId)
-            .map((comment: Comment) => (
-                <IonCard
-                                key={comment.id}
-                                className="userPost userComment"
-                            >
-                                <div className="details">
-                                    <p className="username">
-                                        User: {comment.username}
-                                    </p>
-                                    <p className="username">
-                                        Replied to user: {comment.replyTo}
-                                    </p>
-                                    <div className="date">
-                                        <p>{comment.createdAt}</p>
-                                    </div>
-                                </div>
-                                <div className="content">
-                                    <p className="textcontent">
-                                        {comment.content}
-                                    </p>
-                                </div>
-                                <div className="likesAndComments">
-                                    <IonButton
-                                        size="small"
-                                        fill="clear"
-                                        className="likes reactionCircle"
-                                        onClick={() => {
-                                            toggleLikeStatus(
-                                                'comments',
-                                                comment.id,
-                                                comment.likes
-                                            )
-                                        }}
-                                    >
-                                        <div>
-                                            <IonIcon
-                                                className="icon"
-                                                icon={thumbsUpOutline}
-                                            ></IonIcon>
-                                            <span>{comment.likes.length}</span>
-                                        </div>
-                                    </IonButton>
-
-                                    <IonButton
-                                        size="small"
-                                        fill="clear"
-                                        className="comments reactionCircle"
-                                        onClick={() => {
-                                            createComment(
-                                                comment.username,
-                                                comment.id
-                                            )
-                                        }}
-                                    >
-                                        <div>
-                                            <IonIcon
-                                                className="icon"
-                                                icon={chatboxEllipsesOutline}
-                                            ></IonIcon>
-                                            <span>
-                                                {comment.comments.length}
-                                            </span>
-                                        </div>
-                                    </IonButton>
-                                </div>
-                                <div className='nestedComments'>
-                                    {renderComments(comments, comment.id)}
-                                </div>
-                            </IonCard>
-            ))
-    }
-
-    // In your component's render method:
-
-
-
-
     if (!postData) {
         return (
             <IonPage>
@@ -201,7 +124,7 @@ const PostPage: React.FC = () => {
     return (
         <IonPage>
             <IonHeader>
-                <IonToolbar>
+                <IonToolbar color='primary'>
                     <IonButtons slot="start">
                         <IonButton routerLink="/forumpage">
                             <IonIcon icon={arrowBack}></IonIcon>
@@ -226,7 +149,7 @@ const PostPage: React.FC = () => {
                         <IonButton
                             size="small"
                             fill="clear"
-                            className="likes reactionCircle"
+                            className={`${postData.likes.includes(userId)? 'active likes' : 'likes reactionCircle'}`}
                             onClick={() => {
                                 toggleLikeStatus(
                                     'posts',
@@ -257,19 +180,16 @@ const PostPage: React.FC = () => {
                                     className="icon"
                                     icon={chatboxEllipsesOutline}
                                 ></IonIcon>
-                                <span>{postData.comments.length}</span>
+                                <span>{commentsCount}</span>
                             </div>
                         </IonButton>
                     </div>
                 </IonCard>
 
-                {/* MARK: comments rendered here*/}
-                {/* TODO: Figure out a way to keep count of comments, the same way likes are counted */}
                 <div className="commentsContainer">
-                    {comments && renderComments(comments, postId)}
+                    {comments && <RenderComments comments={comments} parentId={postId} toggleLikeStatus={toggleLikeStatus} createComment={createComment} userId={userId}/>}
                 </div>
 
-                {/* MARK: Modal for comment creation */}
                 <IonModal
                     onDidDismiss={() => setCommenting(false)}
                     isOpen={commenting}

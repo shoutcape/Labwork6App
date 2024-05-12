@@ -1,0 +1,111 @@
+/* Details */
+.details {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0px;
+    margin-top: 0px;
+    .username{
+        margin-bottom: 0px;
+    }
+}
+
+.date p {
+    margin-bottom: 0px;
+}
+
+/* Text Content */
+.textcontent {
+    padding: 10px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #000000;
+    font-size: 15px;
+}
+
+/* User Post */
+.userPost {
+    padding: 10px;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin: auto;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+
+.active {
+    border-radius: 20px;
+    border: solid 1px black;
+    display: flex;
+    background-color: rgba(56, 129, 255, 0.719);
+    gap: 2px;
+    padding: 3px 7px 3px 7px;
+    margin: 50px;
+    padding: 100px;
+}
+
+/* User Comment */
+.userComment {
+    margin: auto;
+    margin-top: 15px;
+    box-shadow: -15px 0px 0px -7px rgb(56, 128, 255);
+
+}
+
+.userComment .userComment {
+    margin-left: 10px;
+    padding-right: 0px;
+    .details, .likesAndComments {
+        padding-right: 10px;
+    }
+}
+
+/* Username */
+.username {
+    font-weight: bold;
+}
+
+.reply {
+    margin-top: 0px;
+    font-weight: 100;
+    text-indent: 5px;
+}
+
+
+ion-title {
+    font-size: 20px;
+    width: 100%; 
+    text-align: center; 
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+    .postsContainer {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .userPost {
+        min-height: 200px;
+    }
+}
+
+@media (max-width: 480px) {
+    .postsContainer {
+        grid-template-columns: repeat(1, 1fr);
+    }
+
+    .userPost {
+        min-height: 100px;
+    }
+}
+
+

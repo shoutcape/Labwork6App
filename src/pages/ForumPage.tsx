@@ -27,6 +27,7 @@ export interface PostData {
     content: string
     likes: string[]
     comments: Comment[]
+    commentsCount: number
 }
 
 const ForumPage: React.FC = () => {
