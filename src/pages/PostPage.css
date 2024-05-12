@@ -1,53 +1,12 @@
-
-/* Container for Posts */
-.postsContainer {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-    margin: auto;
-    max-width: 1200px;
-}
-
-
-
-/* Likes and Comments Section */
-.likes,
-.comments {
-    display: flex;
-    align-items: center;
-}
-
-.likes span,
-.comments span {
-    margin-top: 3px;
-}
-
-/* Icon */
-.icon {
-    width: 20px;
-    height: 20px;
-    fill: #333;
-}
-
-/* Date */
-.date {
-    text-align: center;
-    display: flex;
-    align-items: center;
-    margin-left: 15px;
-    color: #777;
-}
-
 /* Details */
 .details {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-}
-
-/* Content */
-.content {
-    margin-left: 5px;
+    margin-bottom: 0px;
+    margin-top: 0px;
+    .username{
+        margin-bottom: 0px;
+    }
 }
 
 /* Text Content */
@@ -79,41 +38,36 @@
 .userComment {
     margin: auto;
     margin-top: 15px;
+    box-shadow: -15px 0px 0px -7px rgb(56, 128, 255);
+
 }
 
-/* Likes and Comments Section */
-.likesAndComments {
-    display: flex;
-    margin-top: auto;
-    gap: 7px;
-    justify-content: flex-end;
+.userComment .userComment {
+    margin-left: 10px;
+    padding-right: 0px;
+    .details, .likesAndComments {
+        padding-right: 10px;
+    }
 }
 
-.likesAndComments ion-button {
-    margin: 0px;
-    padding: 0px;
+/* Username */
+.username {
+    font-weight: bold;
 }
 
-.likesAndComments div {
-    display: flex;
-    align-items: center;
-    gap: 3px;
-    color: black;
+.reply {
+    margin-top: 0px;
+    font-weight: 100;
 }
 
 
-/* Username Form */
-.usernameForm {
-    display: flex;
-    flex-direction: column;
-}
-
-.usernameForm ion-input {
-    margin-top: 10px;
-}
-
-.usernameForm ion-button {
-    margin-top: -10px;
+ion-title {
+    font-size: 20px;
+    width: 100%; 
+    text-align: center; 
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis; 
 }
 
 /* Media Queries */
@@ -137,17 +91,4 @@
     }
 }
 
-/* Username */
-.username {
-    font-weight: bold;
-}
-
-ion-title {
-    font-size: 20px;
-    width: 100%; 
-    text-align: center; 
-    white-space: nowrap; 
-    overflow: hidden; 
-    text-overflow: ellipsis; 
-}
 
