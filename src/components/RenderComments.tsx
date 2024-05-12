@@ -25,11 +25,11 @@ const RenderComments: React.FC<RenderCommentsProps> = ({ comments, parentId, tog
                         <IonCard key={comment.id} className="userPost userComment">
                             <div className="details">
                                 <p className="username">User: {comment.username}</p>
-                                <p className="username">Replied to user: {comment.replyTo}</p>
                                 <div className="date">
                                     <p>{comment.createdAt}</p>
                                 </div>
                             </div>
+                            <p className="username reply">Replied to user: {comment.replyTo}</p>
                             <div className="content">
                                 <p className="textcontent">{comment.content}</p>
                             </div>

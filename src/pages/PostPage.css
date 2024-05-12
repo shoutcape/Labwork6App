@@ -9,6 +9,10 @@
     }
 }
 
+.date p {
+    margin-bottom: 0px;
+}
+
 /* Text Content */
 .textcontent {
     padding: 10px;
@@ -70,6 +74,7 @@
 .reply {
     margin-top: 0px;
     font-weight: 100;
+    text-indent: 5px;
 }
 
 
