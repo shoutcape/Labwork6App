@@ -6,10 +6,9 @@ import { PostData } from '../pages/ForumPage'
 
 interface Props {
     showCreatePostModal: boolean
-    setCommentsCount: React.Dispatch<React.SetStateAction<number>>
 }
 
-const PostList: React.FC<Props> = ({ showCreatePostModal, setCommentsCount }) => {
+const PostList: React.FC<Props> = ({ showCreatePostModal }) => {
     const [posts, setPosts] = useState<PostData[]>([])
 
     const fetchPosts = async () => {
