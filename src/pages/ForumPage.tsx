@@ -1,4 +1,4 @@
-import { IonPage, IonContent, IonButton, IonModal } from '@ionic/react'
+import { IonPage, IonContent, IonButton, IonModal, IonButtons, IonIcon } from '@ionic/react'
 import './ForumPage.css'
 import { Redirect, useHistory, useLocation } from 'react-router'
 import { useAuth } from '../auth/useAuth'
@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from 'react'
 import CreatePostModal from '../components/CreatePostModal'
 import UsernameModal from '../components/UsernameModal'
 import PostList from '../components/PostList'
+import { logOutOutline } from 'ionicons/icons'
 
 export interface Comment {
     id: string
@@ -77,6 +78,16 @@ const ForumPage: React.FC = () => {
     return (
         <IonPage>
             <IonContent className="ion-padding">
+                <div
+                    className="back-button"
+                    onClick={() => {
+                        firebase.auth().signOut().then(() => {
+                        history.push('/login')
+                        })
+                    }}
+                >
+                    <IonIcon icon={logOutOutline} size="large" color="medium" />
+                </div>
                 <h1 className="ion-text-center mb-4 title" color="primary">
                     Forum
                 </h1>
